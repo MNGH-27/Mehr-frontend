@@ -1,0 +1,12 @@
+/* Html & body & * & etc . . . */
+* {
+    @apply !font-iran-yekan-bakh;
+}
+
+.rtl {
+    direction: rtl;
+}
+
+.ltr {
+    direction: ltr;
+}

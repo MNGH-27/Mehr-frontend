@@ -1,0 +1,41 @@
+'use client'
+
+import { type FC } from 'react'
+import Link from 'next/link'
+import { ChevronLeft, Home } from 'lucide-react'
+import { Anchor, Breadcrumbs } from '@mantine/core'
+
+import { Routes } from '@core/constants/routes'
+
+import { type ISBreadCrumbsProps } from './resources'
+
+const SBreadCrumbs: FC<ISBreadCrumbsProps> = ({ items, className = '' }) => {
+    return (
+        <Breadcrumbs
+            separator={<ChevronLeft className='text-gray-500 mx-1' size='12' />}
+            style={{
+                boxShadow: '0px 0px 12px 0px #0000001A'
+            }}
+            className={
+                `w-full !items-center !text-sm !h-fit py-[18px] px-[22px] rounded-2xl flex flex-wrap my-3` + className
+            }
+        >
+            <Anchor component={Link} className='!flex gap-4 !text-secondary-900 !text-sm' href={Routes.Panel()}>
+                <Home className='text-secondary-900 fill-secondary-900' size={20} />
+                صفحه اصلی پنل
+            </Anchor>
+            {items.map((item, index) => (
+                <Anchor
+                    component={Link}
+                    className={`!text-sm ${index === items.length - 1 ? '!text-gray-700 pointer-events-none' : '!text-gray-800'}`}
+                    href={item.href}
+                    key={index}
+                >
+                    {item.title}
+                </Anchor>
+            ))}
+        </Breadcrumbs>
+    )
+}
+
+export default SBreadCrumbs

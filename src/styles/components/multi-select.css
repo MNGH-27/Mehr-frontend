@@ -1,0 +1,3 @@
+.mantine-MultiSelect-option[data-checked='true'] {
+    @apply !bg-primary-tinted-100/50 !text-primary;
+}

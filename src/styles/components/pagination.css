@@ -1,0 +1,11 @@
+.mantine-Pagination-control[data-active='true'] {
+    @apply !text-primary bg-primary-tinted-100 hover:!bg-primary-tinted-300 duration-300;
+}
+
+.mantine-Pagination-control:last-of-type {
+    @apply !border-l !rounded-l;
+}
+
+.mantine-Pagination-control:first-of-type {
+    @apply !rounded-r;
+}

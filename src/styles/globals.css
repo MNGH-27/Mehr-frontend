@@ -1,0 +1,13 @@
+/* Components */
+@import './components/scroll-bar.css';
+@import './components/pagination.css';
+@import './components/nav-link.css';
+@import './components/select.css';
+@import './components/multi-select';
+
+/* Vendors */
+@import './vendors/tailwind.css';
+@import './vendors/mantine.css';
+
+/* Base */
+@import './base/base.css';

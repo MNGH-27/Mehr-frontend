@@ -1,0 +1,9 @@
+.mantine-Select-option {
+    direction: ltr;
+    text-align: right;
+    justify-content: end;
+}
+
+.mantine-Select-option[data-checked='true'] {
+    @apply !bg-primary-tinted-100/50 !text-primary;
+}

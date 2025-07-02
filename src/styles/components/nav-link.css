@@ -1,0 +1,7 @@
+.mantine-NavLink-section[data-position='right'] {
+    @apply !rotate-180;
+}
+
+.mantine-NavLink-section[data-position='right'][data-rotate='true'] {
+    @apply !rotate-90;
+}
