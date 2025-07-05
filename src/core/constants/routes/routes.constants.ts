@@ -3,7 +3,9 @@ const Routes = {
 
     Panel: () => '/panel',
 
-    Users: () => Routes.Panel() + '/users'
+    Users: () => Routes.Panel() + '/users',
+
+    ManageOrgans: () => Routes.Panel() + '/manage-organs'
 }
 
 export default Routes
