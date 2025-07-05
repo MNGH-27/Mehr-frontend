@@ -56,7 +56,7 @@ const ManageOrgansTable: FC<IManageOrgansTableProps> = ({ data }) => {
 
             <SModal
                 topSection={{
-                    title: 'حدف سازمان',
+                    title: 'حذف سازمان',
                     description: 'با حذف سازمان، دسترسی های آن سازمان از دست خواهد رفت',
                     icon: <MinusSquare size={20} />
                 }}

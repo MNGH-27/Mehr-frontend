@@ -1,4 +1,4 @@
-import { Building2, ChartColumn, ChartNetworkIcon, ExternalLinkIcon, Home, Users2 } from 'lucide-react'
+import { Building2, ChartColumn, ChartNetworkIcon, ExternalLinkIcon, Home, Users2, UserSquare2 } from 'lucide-react'
 
 import { Routes } from '@core/constants/routes'
 
@@ -20,7 +20,12 @@ const SIDEBAR_LIST = [
                 title: 'گزارش گیری',
                 icon: <ChartNetworkIcon size={20} />,
                 href: '/chart'
-            },
+            }
+        ]
+    },
+    {
+        groupTitle: 'مدیریت',
+        groupList: [
             {
                 title: 'مدیریت کاربران',
                 icon: <Users2 size={20} />,
@@ -30,6 +35,16 @@ const SIDEBAR_LIST = [
                 title: 'مدیریت سازمان ها',
                 icon: <Building2 size={20} />,
                 href: Routes.ManageOrgans()
+            },
+            {
+                title: 'مدیریت نوع سازمان ها',
+                icon: <Building2 size={20} />,
+                href: Routes.ManageOrganTypes()
+            },
+            {
+                title: 'مدیریت نقش ها',
+                icon: <UserSquare2 size={20} />,
+                href: Routes.ManageRoleTypes()
             }
         ]
     },

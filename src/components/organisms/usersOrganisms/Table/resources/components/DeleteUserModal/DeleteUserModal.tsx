@@ -32,7 +32,7 @@ const DeleteUserModal: FC<IDeleteUserModalProps> = ({ onClose, data }) => {
     })
 
     return (
-        <div className='flex items-center justify-center gap-x-5 mt-10'>
+        <div className='flex items-center justify-center gap-x-5'>
             <SButton onClick={onClose} size='M' variant='OutlineSecondary'>
                 انصراف
             </SButton>

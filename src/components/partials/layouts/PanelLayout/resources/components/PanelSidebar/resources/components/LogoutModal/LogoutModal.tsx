@@ -39,7 +39,7 @@ const LogoutModal: FC<ILogoutModalProps> = ({ onClose }) => {
                 </span>
             </div>
 
-            <div className='flex flex-col-reverse sm:flex-row items-center justify-center gap-y-2 gap-x-5 mt-10'>
+            <div className='flex flex-col-reverse sm:flex-row items-center justify-center gap-y-2 gap-x-5'>
                 <SButton onClick={onClose} size='M' variant='OutlineSecondary'>
                     انصراف
                 </SButton>
