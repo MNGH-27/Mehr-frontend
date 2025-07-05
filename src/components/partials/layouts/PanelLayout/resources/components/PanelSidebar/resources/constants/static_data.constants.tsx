@@ -1,4 +1,6 @@
-import { ChartColumn, ChartNetworkIcon, ExternalLinkIcon, Home } from 'lucide-react'
+import { ChartColumn, ChartNetworkIcon, ExternalLinkIcon, Home, Users2 } from 'lucide-react'
+
+import { Routes } from '@core/constants/routes'
 
 const SIDEBAR_LIST = [
     {
@@ -7,7 +9,7 @@ const SIDEBAR_LIST = [
             {
                 title: 'خانه',
                 icon: <Home size={20} />,
-                href: '/'
+                href: Routes.Panel()
             },
             {
                 title: 'ثبت آمار',
@@ -18,6 +20,11 @@ const SIDEBAR_LIST = [
                 title: 'گزارش گیری',
                 icon: <ChartNetworkIcon size={20} />,
                 href: '/chart'
+            },
+            {
+                title: 'مدیریت کاربران',
+                icon: <Users2 size={20} />,
+                href: Routes.Users()
             }
         ]
     },

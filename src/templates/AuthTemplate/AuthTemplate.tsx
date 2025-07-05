@@ -2,7 +2,6 @@
 
 import { useEffect } from 'react'
 import Image from 'next/image'
-import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { Controller, useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
@@ -13,10 +12,13 @@ import { useMutation } from '@tanstack/react-query'
 import { SInputField } from '@molecules/SInputField'
 
 import { SButton } from '@atoms/SButton'
+import { SCaptcha } from '@atoms/SCaptcha'
 import { SInput } from '@atoms/SInput'
 import { SPasswordInput } from '@atoms/SPasswordInput'
 
 import { Routes } from '@core/constants/routes'
+import { postLoginUserMutationFn } from '@core/services/api/sign-up/post-login-user'
+import { useGetCaptcha } from '@core/services/hooks/basic-info/useGetCaptcha'
 import { type TCriticalAny } from '@core/types/type-any'
 
 import { authenticationSchema, type TAuthForm } from './resources'
@@ -26,24 +28,35 @@ const AuthTemplate = () => {
 
     const {
         formState: { errors },
-        control
+        control,
+        handleSubmit
     } = useForm<TAuthForm>({
         resolver: yupResolver(authenticationSchema)
     })
 
-    const { isPending } = useMutation({
-        mutationFn: async () => {},
+    const { data: captcha, isFetching: isFetchingCaptcha, refetch: refetchCaptcha } = useGetCaptcha({})
+
+    const { mutate, isPending: isSubmitting } = useMutation({
+        mutationFn: postLoginUserMutationFn,
         onSuccess: (response: TCriticalAny) => {
-            toast.success(response.data.message ?? 'ورود موفق')
+            toast.success('با موفقیت وارد شدید')
+            const expirationDate = new Date()
+            expirationDate.setHours(expirationDate.getHours() + 6)
 
             localStorage.setItem('token', response.data.token)
             localStorage.setItem('fullName', response.data.fullName)
-            // addPermissions(response.data.permissions)
+            localStorage.setItem('lastRole', JSON.stringify(response.data.lastRole))
 
+            //redirect to panel
             push(Routes.Panel())
         },
         onError: (error: TCriticalAny) => {
-            toast.error(error.data.errror.message || 'ورود با مشکل مواجه شد')
+            //check if there is message to show
+            if (error.data.errors.message) toast.error(error.data.errors.message)
+            else toast.error('ورود ناموفق بود')
+
+            //refetch captcha
+            refetchCaptcha()
         }
     })
 
@@ -67,7 +80,12 @@ const AuthTemplate = () => {
                     <span className='text-base md:text-lg xl:text-xl font-medium text-white'>وزارت آموزش پرورش</span>
                 </div>
 
-                <form className='grid w-full border-2 rounded-b-2xl shadow-sm py-4 sm:py-6 px-8 sm:px-16 md:px-20 xl:px-32 bg-white'>
+                <form
+                    onSubmit={handleSubmit((value) =>
+                        mutate({ ...value, captchaKey: captcha?.data.imageKey as string, isRememberMe: false })
+                    )}
+                    className='grid w-full border-2 rounded-b-2xl shadow-sm py-4 sm:py-6 px-8 sm:px-16 md:px-20 xl:px-32 bg-white'
+                >
                     <div className='flex flex-col gap-y-1 items-center justify-center max-w-[500px] mx-auto md:px-5 sm:mt-5 mb-7'>
                         <span className='text-primary text-lg md:text-xl xl:text-2xl font-medium  '>
                             ورود به حساب کاربری
@@ -79,7 +97,7 @@ const AuthTemplate = () => {
                     </div>
 
                     <Controller
-                        name='email'
+                        name='userName'
                         control={control}
                         defaultValue=''
                         render={({ field }) => (
@@ -108,24 +126,32 @@ const AuthTemplate = () => {
                         )}
                     />
 
-                    <SButton isLoading={isPending} variant='FilledPrimary' size='M' className='my-5'>
+                    <div className='flex items-center justify-center gap-x-2'>
+                        <Controller
+                            name='captchaValue'
+                            control={control}
+                            defaultValue=''
+                            render={({ field }) => (
+                                <SInputField
+                                    label='کدامنیتی'
+                                    description='حساس به حروف بزرگ و کوچک'
+                                    errors={errors}
+                                    name={field.name}
+                                    className='mt-5'
+                                >
+                                    <SInput {...field} inputType='other' placeholder='مقدار کد امنیتی را وارد کنید' />
+                                </SInputField>
+                            )}
+                        />
+                        <SCaptcha
+                            captcha={captcha?.data}
+                            refetchCaptcha={refetchCaptcha}
+                            isFetchingCaptcha={isFetchingCaptcha}
+                        />
+                    </div>
+                    <SButton isLoading={isSubmitting} variant='FilledPrimary' size='M' className='my-5'>
                         ورود به سامانه
                     </SButton>
-
-                    <div className='flex items-center justify-center flex-col w-full gap-y-2'>
-                        <p className='flex items-center justify-center gap-x-1 w-full text-gray-700 !text-xs md:!text-sm'>
-                            رمزعبور خود را فراموش کرده اید؟  
-                            <SButton component={Link} href={'/'} className='!w-fit' variant='TextPrimary' size='None'>
-                                بازیابی رمز عبور
-                            </SButton>
-                        </p>
-                        <p className='flex items-center justify-center gap-x-1 w-full text-gray-700 !text-xs md:!text-sm'>
-                            هنوز ثبت نام نکرده اید؟
-                            <SButton component={Link} href={'/'} className='!w-fit' variant='TextPrimary' size='None'>
-                                 همین حالا ثبت‌نام کنید
-                            </SButton>
-                        </p>
-                    </div>
                 </form>
                 <p className='text-[10px] sm:text-sm md:text-base text-center mt-3 text-primary font-medium'>
                     کلیه حقوق این سامانه متعلق به وزارت آموزش و پرورش جمهوری اسلامی ایران می‌باشد.

@@ -1,7 +1,9 @@
 const Routes = {
     Login: () => '/',
 
-    Panel: () => '/panel'
+    Panel: () => '/panel',
+
+    Users: () => Routes.Panel() + '/users'
 }
 
 export default Routes

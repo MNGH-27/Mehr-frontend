@@ -1,6 +1,7 @@
 type TAuthForm = {
+    userName: string
     password: string
-    email: string
+    captchaValue: string
 }
 
 export type { TAuthForm }

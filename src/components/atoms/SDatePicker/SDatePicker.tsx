@@ -16,12 +16,12 @@ const SDatePicker = forwardRef<HTMLInputElement, ISDatePickerProps>(
                         style={{ display: value ? undefined : 'none' }}
                         size='18'
                         color='gray'
-                        className='pointer-events-auto cursor-pointer absolute left-2 top-3'
+                        className='pointer-events-auto cursor-pointer absolute left-2 top-3.5'
                     />
                 )}
                 <DatePicker
                     inputClass={
-                        `rounded-md bg-gray-100 border-2 border-gray-200 h-auto py-2 pr-8 w-full ${disabled ? '!text-gray-600 hover:!border-blue-tint-600' : 'focus:border-blue-tint-700 focus:outline-none hover:border-primary cursor-pointer'}` +
+                        `!border !border-gray-200 !rounded-lg pr-9 !py-2 md:!py-3 !h-auto placeholder:!text-secondary-700 placeholder:!text-base !text-base focus:!border-primary-tinted-700 hover:!border-primary !w-full ${disabled ? '!text-gray-600 hover:!border-blue-tint-600' : 'focus:border-blue-tint-700 focus:outline-none hover:border-primary cursor-pointer'}` +
                         className
                     }
                     containerClassName='w-full'
@@ -37,8 +37,8 @@ const SDatePicker = forwardRef<HTMLInputElement, ISDatePickerProps>(
                     disabled={disabled}
                     {...rest}
                 />
-                <div className='pointer-events-none absolute text-sm font-medium flex items-center gap-2 top-3 right-3 text-gray-600/70 '>
-                    {leftSection ?? <Calendar size={16} />}
+                <div className='pointer-events-none absolute text-sm font-medium flex items-center gap-2 top-3.5 right-3 text-gray-600/70 '>
+                    {leftSection ?? <Calendar size={20} />}
                 </div>
             </div>
         )

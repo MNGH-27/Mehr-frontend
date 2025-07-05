@@ -1,7 +1,7 @@
-import { type TUserType } from '@core/types/api/user/user'
+import { type TUserListItemType } from '@core/types/api/users.types'
 
 interface IUsersTableProps {
-    data?: TUserType[]
+    data?: TUserListItemType[]
 }
 
 export default IUsersTableProps

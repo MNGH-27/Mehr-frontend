@@ -1,8 +1,8 @@
-import { type TUserType } from '@core/types/api/user/user'
+import { type TUserListItemType } from '@core/types/api/users.types'
 
 interface IDeleteUserModalProps {
     onClose: () => void
-    data?: TUserType
+    data?: TUserListItemType
 }
 
 export type { IDeleteUserModalProps }

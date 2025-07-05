@@ -1,36 +1,42 @@
 'use client'
 
-import { type FC } from 'react'
+import { type FC, useEffect } from 'react'
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 import { Menu, SearchIcon, User2 } from 'lucide-react'
 import { useDisclosure } from '@mantine/hooks'
+import { useQueryClient } from '@tanstack/react-query'
 
 import { SButton } from '@atoms/SButton'
+
+import { Routes } from '@core/constants/routes'
 
 import { type IPanelLayoutProps, PanelHeader, PanelSidebar } from './resources'
 
 const PanelLayout: FC<IPanelLayoutProps> = ({ children }) => {
+    const { push } = useRouter()
+    const queryClient = useQueryClient()
     const [isShowSidebar, { close: onCloseSidebar, open: onOpenSidebar }] = useDisclosure(false)
 
-    // //redirect user to panel if there is no token in cookie
-    // useEffect(() => {
-    //     const accessToken = localStorage.getItem('token')
+    //redirect user to panel if there is no token in cookie
+    useEffect(() => {
+        const accessToken = localStorage.getItem('token')
 
-    //     //check if there is no token in cookie
-    //     if (!accessToken) {
-    //         localStorage.removeItem('fullName')
-    //         localStorage.removeItem('lastRole')
+        //check if there is no token in cookie
+        if (!accessToken) {
+            localStorage.removeItem('fullName')
+            localStorage.removeItem('lastRole')
 
-    //         localStorage.removeItem('token')
+            localStorage.removeItem('token')
 
-    //         //reset all queries
-    //         queryClient.removeQueries()
+            //reset all queries
+            queryClient.removeQueries()
 
-    //         push(Routes.Login())
-    //     }
+            push(Routes.Login())
+        }
 
-    //     // eslint-disable-next-line react-hooks/exhaustive-deps
-    // }, [])
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
 
     return (
         <main className='p-2 lg:p-4 h-screen w-screen space-y-3 bg-white lg:bg-gray-100 flex flex-col    lg:flex-row items-center gap-x-4'>

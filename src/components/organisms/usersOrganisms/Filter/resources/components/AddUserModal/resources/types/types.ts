@@ -5,14 +5,12 @@ interface IAddUserModalProps {
 type TAddUserForm = {
     firstName: string
     lastName: string
+    natId: string
     phoneNumber: string
-    email: string
-    companyId: string
-    nationalCode: string
-    role: string
-    roleId?: string | null
     password: string
     confirmPassword: string
+    userName: string
+    birthDate: Date
 }
 
 export type { IAddUserModalProps, TAddUserForm }

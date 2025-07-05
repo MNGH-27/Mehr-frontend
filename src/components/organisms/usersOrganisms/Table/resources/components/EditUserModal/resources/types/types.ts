@@ -1,21 +1,18 @@
-import { type TUserType } from '@core/types/api/user/user'
+import { type TUserListItemType } from '@core/types/api/users.types'
 
 interface IEditUserModalProps {
     onClose: () => void
-    data?: TUserType
+    data?: TUserListItemType
 }
 
 type TEditUserForm = {
     firstName: string
     lastName: string
+    natId: string
     phoneNumber: string
-    email: string
-    companyId: string
-    nationalCode: string
-    role: string
-    roleId?: string | null
     password?: string
     confirmPassword?: string
+    birthDate: Date
 }
 
 export type { IEditUserModalProps, TEditUserForm }

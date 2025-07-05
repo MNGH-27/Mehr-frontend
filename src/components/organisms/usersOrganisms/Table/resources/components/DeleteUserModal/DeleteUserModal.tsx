@@ -5,7 +5,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { SButton } from '@atoms/SButton'
 
 import { QueryKeysEnum } from '@core/enums/query-keys'
-import { postDeleteUserMutationFn } from '@core/services/api/user/post-delete-user'
+import { deleteUserMutationFn } from '@core/services/api/user/delete-user'
 import { type TCriticalAny } from '@core/types/type-any'
 
 import { type IDeleteUserModalProps } from './resources'
@@ -14,13 +14,13 @@ const DeleteUserModal: FC<IDeleteUserModalProps> = ({ onClose, data }) => {
     const queryClient = useQueryClient()
 
     const { mutate, isPending } = useMutation({
-        mutationFn: postDeleteUserMutationFn,
+        mutationFn: deleteUserMutationFn,
         onSuccess: (response: TCriticalAny) => {
             toast.success(response.data.message ?? 'کاربر با موفقیت حذف شد')
 
             //invalidate queryKeys
             queryClient.invalidateQueries({
-                queryKey: [QueryKeysEnum.AllUsers1]
+                queryKey: [QueryKeysEnum.AllUser]
             })
 
             //close modal
@@ -39,7 +39,7 @@ const DeleteUserModal: FC<IDeleteUserModalProps> = ({ onClose, data }) => {
             <SButton
                 onClick={() =>
                     mutate({
-                        UserId: data?.userId ?? -1
+                        UserId: data?.id ?? -1
                     })
                 }
                 isLoading={isPending}

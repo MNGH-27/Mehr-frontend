@@ -1,5 +1,7 @@
 enum QueryKeysEnum {
-    MyCompanies = 'my-companies'
+    Captcha = 'Captcha',
+    UserInfoByNatId = 'UserInfoByNatId',
+    AllUser = 'AllUser'
 }
 
 export { QueryKeysEnum }

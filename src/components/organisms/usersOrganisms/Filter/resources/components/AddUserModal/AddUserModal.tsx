@@ -1,22 +1,21 @@
 import { type FC } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
+import { Key, NotepadText, Phone, User2 } from 'lucide-react'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 import { SInputField } from '@molecules/SInputField'
 
 import { SButton } from '@atoms/SButton'
+import { SDatePicker } from '@atoms/SDatePicker'
 import { SInput } from '@atoms/SInput'
-import { SSelect } from '@atoms/SSelect'
+import { SPasswordInput } from '@atoms/SPasswordInput'
 
 import { QueryKeysEnum } from '@core/enums/query-keys'
-import { postAddUserMutationFn } from '@core/services/api/user/post-add-user'
-import { useGetAllCompanies } from '@core/services/hooks/company/useGetAllCompanies'
-import { useGetAllCompanyPositions } from '@core/services/hooks/user/useGetAllCompanyPositions'
-import { useGetAllRoles } from '@core/services/hooks/user/useGetAllRoles'
+import { postCreateUserMutationFn } from '@core/services/api/sign-up/post-create-user'
 import { type TCriticalAny } from '@core/types/type-any'
-import { convertDataSelectList } from '@core/utils/common/convert-data-select-list'
+import { convertDateMicroseconds } from '@core/utils/common/convert-date-micro-seconds'
 
 import { addUserSchema, type IAddUserModalProps, type TAddUserForm } from './resources'
 
@@ -31,21 +30,14 @@ const AddUserModal: FC<IAddUserModalProps> = ({ onClose }) => {
         resolver: yupResolver(addUserSchema)
     })
 
-    const { data: allCompanySystemType, isLoading: isLoadingCompanySystemType } = useGetAllCompanies({
-        pageNumber: 1,
-        pageSize: 1000
-    })
-    const { data: allRoles, isLoading: isLoadingAllRoles } = useGetAllRoles({})
-    const { data: allCompanyPositions, isLoading: isLoadingAllCompanyPositions } = useGetAllCompanyPositions({})
-
     const { mutate, isPending } = useMutation({
-        mutationFn: postAddUserMutationFn,
+        mutationFn: postCreateUserMutationFn,
         onSuccess: (response: TCriticalAny) => {
             toast.success(response.data.message ?? 'کاربر با موفقیت اضافه شد')
 
             //invalidate queryKeys
             queryClient.invalidateQueries({
-                queryKey: [QueryKeysEnum.AllUsers1]
+                queryKey: [QueryKeysEnum.AllUser]
             })
 
             //close modal
@@ -61,16 +53,13 @@ const AddUserModal: FC<IAddUserModalProps> = ({ onClose }) => {
             className='grid md:grid-cols-2 gap-5'
             onSubmit={handleSubmit((value) =>
                 mutate({
-                    companyId: +value.companyId,
-                    confirmPassword: value.confirmPassword,
-                    email: value.email,
                     firstName: value.firstName,
                     lastName: value.lastName,
-                    nationalCode: value.nationalCode,
+                    natId: value.natId,
                     password: value.password,
                     phoneNumber: value.phoneNumber,
-                    roleId: value.roleId ? +value.roleId : undefined,
-                    role: +value.role
+                    birthDate: convertDateMicroseconds(value.birthDate),
+                    userName: value.userName
                 })
             )}
         >
@@ -79,8 +68,8 @@ const AddUserModal: FC<IAddUserModalProps> = ({ onClose }) => {
                 control={control}
                 defaultValue=''
                 render={({ field }) => (
-                    <SInputField label='نام کاربر' errors={errors} name={field.name}>
-                        <SInput {...field} placeholder='نام کاربر را وارد کنید' />
+                    <SInputField label='نام' errors={errors} name={field.name}>
+                        <SInput leftSection={<User2 />} {...field} placeholder='نام را وارد کنید' />
                     </SInputField>
                 )}
             />
@@ -89,8 +78,8 @@ const AddUserModal: FC<IAddUserModalProps> = ({ onClose }) => {
                 control={control}
                 defaultValue=''
                 render={({ field }) => (
-                    <SInputField label='نام‌خانوادگی کاربر' errors={errors} name={field.name}>
-                        <SInput {...field} placeholder='نام‌خانوادگی کاربر را وارد کنید' />
+                    <SInputField label='نام‌خانوادگی' errors={errors} name={field.name}>
+                        <SInput leftSection={<User2 />} {...field} placeholder='نام‌خانوادگی را وارد کنید' />
                     </SInputField>
                 )}
             />
@@ -99,79 +88,53 @@ const AddUserModal: FC<IAddUserModalProps> = ({ onClose }) => {
                 control={control}
                 render={({ field }) => (
                     <SInputField label='شماره تلفن' errors={errors} name={field.name}>
-                        <SInput inputType='number' maxLength={11} {...field} placeholder='شماره تلفن را انتخاب کنید' />
+                        <SInput
+                            leftSection={<Phone />}
+                            inputType='number'
+                            maxLength={11}
+                            {...field}
+                            placeholder='شماره تلفن را انتخاب کنید'
+                        />
                     </SInputField>
                 )}
             />
             <Controller
-                name='email'
+                name='userName'
                 control={control}
                 defaultValue=''
                 render={({ field }) => (
-                    <SInputField label='ایمیل' errors={errors} name={field.name}>
-                        <SInput inputType='other' {...field} placeholder='ایمیل را وارد کنید' />
+                    <SInputField label='نام کاربری' errors={errors} name={field.name}>
+                        <SInput
+                            leftSection={<User2 />}
+                            inputType='english-number'
+                            {...field}
+                            placeholder='نام کاربری را وارد کنید'
+                        />
                     </SInputField>
                 )}
             />
             <Controller
-                name='nationalCode'
+                name='natId'
                 control={control}
                 defaultValue=''
                 render={({ field }) => (
                     <SInputField label='کد‌ملی' errors={errors} name={field.name}>
-                        <SInput maxLength={10} inputType='other' {...field} placeholder='کد‌ملی را وارد کنید' />
-                    </SInputField>
-                )}
-            />
-            <Controller
-                name='companyId'
-                control={control}
-                render={({ field }) => (
-                    <SInputField label='شرکت' errors={errors} name={field.name}>
-                        <SSelect
-                            isLoading={isLoadingCompanySystemType}
-                            data={convertDataSelectList(allCompanySystemType?.data.data)}
+                        <SInput
+                            leftSection={<NotepadText />}
+                            maxLength={10}
+                            inputType='other'
                             {...field}
-                            placeholder='شرکت را انتخاب کنید'
+                            placeholder='کد‌ملی را وارد کنید'
                         />
                     </SInputField>
                 )}
             />
             <Controller
-                name='role'
+                name='birthDate'
                 control={control}
-                defaultValue={''}
                 render={({ field }) => (
-                    <SInputField label='سمت در شرکت' errors={errors} name={field.name} required={false}>
-                        <SSelect
-                            isLoading={isLoadingAllCompanyPositions}
-                            data={convertDataSelectList(allCompanyPositions?.data)}
-                            {...field}
-                            placeholder='سمت در شرکت را انتخاب کنید'
-                        />
-                    </SInputField>
-                )}
-            />
-
-            <Controller
-                name='roleId'
-                control={control}
-                defaultValue={''}
-                render={({ field }) => (
-                    <SInputField
-                        className='col-span-full'
-                        description='در صورتی که این کاربر نقشی در سامانه دارد میتوانید بر اساس نیازمندی آن دسترسی مورد نظر را انتخاب کنید در غیر این صورت این بخش را میتوانید خالی بگذارید'
-                        label='جزئیات نقش مدیر'
-                        errors={errors}
-                        name={field.name}
-                        required={false}
-                    >
-                        <SSelect
-                            isLoading={isLoadingAllRoles}
-                            data={convertDataSelectList(allRoles?.data)}
-                            {...field}
-                            placeholder='جزعیات نقش مدیر را انتخاب کنید'
-                        />
+                    <SInputField label='تاریخ تولد' errors={errors} name={field.name}>
+                        <SDatePicker {...field} placeholder='تاریخ تولد را وارد کنید' />
                     </SInputField>
                 )}
             />
@@ -181,7 +144,7 @@ const AddUserModal: FC<IAddUserModalProps> = ({ onClose }) => {
                 control={control}
                 render={({ field }) => (
                     <SInputField label='کلمه عبور' errors={errors} name={field.name}>
-                        <SInput inputType='other' {...field} placeholder='کلمه عبور را وارد کنید' />
+                        <SPasswordInput leftSection={<Key />} {...field} placeholder='کلمه عبور را وارد کنید' />
                     </SInputField>
                 )}
             />
@@ -190,7 +153,7 @@ const AddUserModal: FC<IAddUserModalProps> = ({ onClose }) => {
                 control={control}
                 render={({ field }) => (
                     <SInputField label='تکرار رمز عبور' errors={errors} name={field.name}>
-                        <SInput inputType='other' {...field} placeholder='تکرار کلمه عبور را وارد کنید' />
+                        <SPasswordInput leftSection={<Key />} {...field} placeholder='تکرار کلمه عبور را وارد کنید' />
                     </SInputField>
                 )}
             />
