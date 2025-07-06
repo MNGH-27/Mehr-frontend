@@ -5,29 +5,29 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { SButton } from '@atoms/SButton'
 
 import { QueryKeysEnum } from '@core/enums/query-keys'
-import { deleteRoleMutationFn } from '@core/services/api/role/delete-role'
+import { deleteOrganMutationFn } from '@core/services/api/organ/delete-organ'
 import { type TCriticalAny } from '@core/types/type-any'
 
-import { type IDeleteRoleModalProps } from './resources'
+import { type IDeleteOrganModalProps } from './resources'
 
-const DeleteRoleModal: FC<IDeleteRoleModalProps> = ({ onClose, data }) => {
+const DeleteOrganModal: FC<IDeleteOrganModalProps> = ({ onClose, data }) => {
     const queryClient = useQueryClient()
 
     const { mutate, isPending } = useMutation({
-        mutationFn: deleteRoleMutationFn,
+        mutationFn: deleteOrganMutationFn,
         onSuccess: (response: TCriticalAny) => {
-            toast.success(response.data.message ?? 'نقش با موفقیت حذف شد')
+            toast.success(response.data.message ?? 'سازمان با موفقیت حذف شد')
 
             //invalidate queryKeys
             queryClient.invalidateQueries({
-                queryKey: [QueryKeysEnum.AllRole]
+                queryKey: [QueryKeysEnum.AllOrgan]
             })
 
             //close modal
             onClose()
         },
         onError: (error: TCriticalAny) => {
-            toast.error(error.data.message || 'حذف نقش با مشکل مواجه شد')
+            toast.error(error.data.message || 'حذف سازمان با مشکل مواجه شد')
         }
     })
 
@@ -39,7 +39,7 @@ const DeleteRoleModal: FC<IDeleteRoleModalProps> = ({ onClose, data }) => {
             <SButton
                 onClick={() =>
                     mutate({
-                        RoleId: data?.id ?? -1
+                        OrganId: data?.id ?? -1
                     })
                 }
                 isLoading={isPending}
@@ -52,4 +52,4 @@ const DeleteRoleModal: FC<IDeleteRoleModalProps> = ({ onClose, data }) => {
     )
 }
 
-export default DeleteRoleModal
+export default DeleteOrganModal

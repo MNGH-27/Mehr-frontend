@@ -6,3 +6,10 @@ export type TUserListItemType = {
     phoneNumber: string
     birthDate: Date
 }
+
+export type TUserByNatIdType = {
+    firstName: string
+    lastName: string
+    natId: string
+    phoneNumber: string
+}

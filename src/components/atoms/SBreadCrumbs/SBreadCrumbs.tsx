@@ -13,11 +13,9 @@ const SBreadCrumbs: FC<ISBreadCrumbsProps> = ({ items, className = '' }) => {
     return (
         <Breadcrumbs
             separator={<ChevronLeft className='text-gray-500 mx-1' size='12' />}
-            style={{
-                boxShadow: '0px 0px 12px 0px #0000001A'
-            }}
             className={
-                `w-full !items-center !text-sm !h-fit py-[18px] px-[22px] rounded-2xl flex flex-wrap my-3` + className
+                `w-full shadow-[0_0_4px_0_rgba(0,0,0,0.15)] !items-center !text-sm !h-fit py-3 px-4 rounded-lg flex flex-wrap mb-3` +
+                className
             }
         >
             <Anchor component={Link} className='!flex gap-4 !text-secondary-900 !text-sm' href={Routes.Panel()}>

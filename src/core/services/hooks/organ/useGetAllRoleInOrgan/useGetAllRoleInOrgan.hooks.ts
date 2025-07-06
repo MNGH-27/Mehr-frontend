@@ -2,26 +2,26 @@ import { useQuery, type UseQueryResult } from '@tanstack/react-query'
 
 import { QueryKeysEnum } from '@core/enums/query-keys'
 import { axiosRequestHandler } from '@core/services/axios'
-import { type TUserByNatIdType } from '@core/types/api/users.types'
+import { type TCriticalAny } from '@core/types/type-any'
 import { type TWithOutPaginateDataType } from '@core/types/with-out-paginate-data'
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
-type TUseGetUserInfoByNatIdType = {
-    NatId?: string | number
+type TUseGetAllRoleInOrganType = {
+    OrganId?: string | number | null
 }
 
-const useGetUserInfoByNatId = (
-    params: TUseGetUserInfoByNatIdType
-): UseQueryResult<TWithOutPaginateDataType<TUserByNatIdType>> =>
+const useGetAllRoleInOrgan = (
+    params: TUseGetAllRoleInOrganType
+): UseQueryResult<TWithOutPaginateDataType<TCriticalAny>> =>
     useQuery({
-        queryKey: [QueryKeysEnum.UserInfoByNatId, { ...params }],
+        queryKey: [QueryKeysEnum.AllRoleInOrgan, { ...params }],
         queryFn: async () =>
             await axiosRequestHandler({
-                url: `User/GetUserInfoByNatId`,
+                url: `Organ/GetAllRoleInOrgan`,
                 method: 'get',
                 params
             }),
-        enabled: !!params.NatId
+        enabled: !!params.OrganId
     })
 
-export default useGetUserInfoByNatId
+export default useGetAllRoleInOrgan

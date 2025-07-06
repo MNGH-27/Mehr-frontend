@@ -1,0 +1,55 @@
+'use client'
+
+import { useState } from 'react'
+import { UserCog2 } from 'lucide-react'
+import { NumberParam, StringParam, useQueryParams } from 'use-query-params'
+import { useDisclosure } from '@mantine/hooks'
+
+import { SSearchWithDelay } from '@molecules/SSearchWithDelay'
+
+import { SButton } from '@atoms/SButton'
+import { SModal } from '@atoms/SModal'
+
+import { AddOrganRoleModal } from './resources'
+
+const ManageOrgansRoleFilter = () => {
+    const [isShowAddModal, { close: onCloseAddModal, open: onOpenAddModal }] = useDisclosure(false)
+
+    const [query, setQuery] = useQueryParams({ name: StringParam, page: NumberParam })
+    const [Search, setSearch] = useState(query.name ?? '')
+
+    const onChangeFilter = (value: string | null) => {
+        setQuery({ name: value, page: 1 })
+    }
+
+    return (
+        <div className='flex flex-col lg:flex-row items-start justify-center gap-x-10 gap-y-3'>
+            <SSearchWithDelay
+                value={Search}
+                onChange={(e) => setSearch(e.target.value)}
+                onDelayChange={onChangeFilter}
+            />
+
+            <div className='flex flex-col sm:flex-row items-center justify-center gap-y-3 gap-x-5 whitespace-nowrap w-full lg:w-fit'>
+                <SButton onClick={onOpenAddModal} size='SM' variant='FilledPrimary'>
+                    <UserCog2 />
+                    افزودن نقش در سازمان
+                </SButton>
+            </div>
+
+            <SModal
+                onClose={onCloseAddModal}
+                opened={isShowAddModal}
+                topSection={{
+                    title: 'ایجاد نقش در سازمان',
+                    description: 'مشخصات نقش در سازمان جدید را وارد کنید:',
+                    icon: <UserCog2 />
+                }}
+            >
+                <AddOrganRoleModal onClose={onCloseAddModal} />
+            </SModal>
+        </div>
+    )
+}
+
+export default ManageOrgansRoleFilter

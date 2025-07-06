@@ -6,6 +6,7 @@ const Routes = {
     Users: () => Routes.Panel() + '/users',
 
     ManageOrgans: () => Routes.Panel() + '/manage-organs',
+    ManageOrgansRole: (organId: string | number) => Routes.ManageOrgans() + `/${organId}/roles`,
 
     ManageOrganTypes: () => Routes.Panel() + '/manage-organ-types',
 

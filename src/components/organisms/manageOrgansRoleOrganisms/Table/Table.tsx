@@ -13,9 +13,9 @@ import { Routes } from '@core/constants/routes'
 import { type TOrganListItemType } from '@core/types/api/organ.types'
 import { type TModalStateType } from '@core/types/modal-state-types'
 
-import { DeleteOrganModal, EditOrganModal, type IManageOrgansTableProps, TABLE_HEAD } from './resources'
+import { DeleteOrganModal, EditOrganModal, type IManageOrgansRoleTableProps, TABLE_HEAD } from './resources'
 
-const ManageOrgansTable: FC<IManageOrgansTableProps> = ({ data }) => {
+const ManageOrgansRoleTable: FC<IManageOrgansRoleTableProps> = ({ data }) => {
     const [deleteModal, setDeleteModal] = useState<TModalStateType<TOrganListItemType>>({ isShow: false })
     const [editModal, setEditModal] = useState<TModalStateType<TOrganListItemType>>({ isShow: false })
 
@@ -93,4 +93,4 @@ const ManageOrgansTable: FC<IManageOrgansTableProps> = ({ data }) => {
     )
 }
 
-export default ManageOrgansTable
+export default ManageOrgansRoleTable

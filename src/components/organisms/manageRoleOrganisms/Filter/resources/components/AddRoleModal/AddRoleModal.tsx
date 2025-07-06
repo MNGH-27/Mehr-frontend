@@ -12,7 +12,7 @@ import { SInput } from '@atoms/SInput'
 import { SMultiSelect } from '@atoms/SMultiSelect'
 
 import { QueryKeysEnum } from '@core/enums/query-keys'
-import { postCreateRoleMutationFn } from '@core/services/api/Role/post-create-role'
+import { postCreateRoleMutationFn } from '@core/services/api/role/post-create-role'
 import { useGetAllOrganTypeNoPage } from '@core/services/hooks/organ/useGetAllOrganTypeNoPage'
 import { type TCriticalAny } from '@core/types/type-any'
 import { convertDataSelectList } from '@core/utils/common/convert-data-select-list'

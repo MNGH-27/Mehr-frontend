@@ -1,6 +1,6 @@
 'use client'
 
-import { type FC } from 'react'
+import { type FC, useEffect, useState } from 'react'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { ArrowRightToLineIcon, ChevronLeft } from 'lucide-react'
@@ -16,7 +16,12 @@ const PanelSidebar: FC<IPanelSidebarProps> = ({ closeSidebarHandler, isShowSideb
     const pathname = usePathname()
 
     const [isShowLogoutModal, { close: onCloseLogoutModal, open: onOpenLogoutModal }] = useDisclosure(false)
+    const [fullName, setFullName] = useState('')
 
+    //get fullName from localStorage
+    useEffect(() => {
+        if (localStorage.getItem('fullName')) setFullName(localStorage.getItem('fullName') ?? '')
+    }, [])
     const checkIsActive = (href: string) => (href !== '/panel' ? pathname.includes(href) : pathname === href)
 
     return (
@@ -74,7 +79,7 @@ const PanelSidebar: FC<IPanelSidebarProps> = ({ closeSidebarHandler, isShowSideb
                     <div className='flex items-center justify-start gap-x-2'>
                         <Image src='/images/user-frame.png' alt='user-frame' width={40} height={40} />
                         <div className='flex flex-col gap-y-1'>
-                            <span className='font-semibold'>فاطمه ندافی</span>
+                            <span className='font-semibold'>{fullName}</span>
                             <span className='text-[10px]'>کارمند ثبت آمار</span>
                         </div>
                     </div>

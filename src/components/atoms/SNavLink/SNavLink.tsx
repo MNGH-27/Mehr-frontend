@@ -1,8 +1,8 @@
 import { type FC } from 'react'
+import Link from 'next/link'
 import { NavLink } from '@mantine/core'
 
 import { type ISNavLinkProp } from './resources'
-import Link from 'next/link'
 
 const SNavLink: FC<ISNavLinkProp> = ({ className = '', active = false, ...rest }) => {
     return (
