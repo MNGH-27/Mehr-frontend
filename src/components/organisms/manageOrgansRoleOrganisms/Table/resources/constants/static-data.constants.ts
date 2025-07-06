@@ -6,20 +6,15 @@ const TABLE_HEAD = [
         title: 'نام'
     },
     {
+        title: 'کدملی'
+    },
+    {
         title: 'شماره تلفن'
     },
     {
-        title: 'استان'
+        title: 'نقش'
     },
-    {
-        title: 'منطقه'
-    },
-    {
-        title: 'آدرس کامل'
-    },
-    {
-        title: 'نوع سازمان'
-    },
+
     {
         title: 'عملیات'
     }

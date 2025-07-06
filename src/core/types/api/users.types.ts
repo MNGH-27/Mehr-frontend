@@ -13,3 +13,13 @@ export type TUserByNatIdType = {
     natId: string
     phoneNumber: string
 }
+
+export type TUserInOrganItemType = {
+    userId: number
+    roleId: number
+    organId: number
+    userFullName: string
+    userNatId: string
+    userPhoneNumber: string
+    roleName: string
+}

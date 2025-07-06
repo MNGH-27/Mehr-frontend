@@ -5,7 +5,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { SButton } from '@atoms/SButton'
 
 import { QueryKeysEnum } from '@core/enums/query-keys'
-import { deleteOrganMutationFn } from '@core/services/api/organ/delete-organ'
+import { deleteFromUserOrganMutationFn } from '@core/services/api/user/delete-from-user-organ'
 import { type TCriticalAny } from '@core/types/type-any'
 
 import { type IDeleteOrganModalProps } from './resources'
@@ -14,9 +14,9 @@ const DeleteOrganModal: FC<IDeleteOrganModalProps> = ({ onClose, data }) => {
     const queryClient = useQueryClient()
 
     const { mutate, isPending } = useMutation({
-        mutationFn: deleteOrganMutationFn,
+        mutationFn: deleteFromUserOrganMutationFn,
         onSuccess: (response: TCriticalAny) => {
-            toast.success(response.data.message ?? 'سازمان با موفقیت حذف شد')
+            toast.success(response.data.message ?? 'نقش در سازمان با موفقیت حذف شد')
 
             //invalidate queryKeys
             queryClient.invalidateQueries({
@@ -27,7 +27,7 @@ const DeleteOrganModal: FC<IDeleteOrganModalProps> = ({ onClose, data }) => {
             onClose()
         },
         onError: (error: TCriticalAny) => {
-            toast.error(error.data.message || 'حذف سازمان با مشکل مواجه شد')
+            toast.error(error.data.message || 'حذف نقش در سازمان با مشکل مواجه شد')
         }
     })
 
@@ -39,7 +39,9 @@ const DeleteOrganModal: FC<IDeleteOrganModalProps> = ({ onClose, data }) => {
             <SButton
                 onClick={() =>
                     mutate({
-                        OrganId: data?.id ?? -1
+                        organId: data?.organId ?? -1,
+                        roleId: data?.roleId ?? -1,
+                        userId: data?.userId ?? -1
                     })
                 }
                 isLoading={isPending}

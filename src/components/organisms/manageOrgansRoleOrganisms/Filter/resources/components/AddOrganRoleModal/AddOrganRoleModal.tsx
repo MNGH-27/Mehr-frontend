@@ -45,18 +45,18 @@ const AddOrganRoleModal: FC<IAddOrganRoleModalProps> = ({ onClose }) => {
     const { mutate, isPending } = useMutation({
         mutationFn: postAddToUserOrganMutationFn,
         onSuccess: (response: TCriticalAny) => {
-            toast.success(response.data.message ?? 'سازمان با موفقیت اضافه شد')
+            toast.success(response.data.message ?? 'نقش در سازمان با موفقیت اضافه شد')
 
             //invalidate queryKeys
             queryClient.invalidateQueries({
-                queryKey: [QueryKeysEnum.AllOrgan]
+                queryKey: [QueryKeysEnum.AllUserInOrgan]
             })
 
             //close modal
             onClose()
         },
         onError: (error: TCriticalAny) => {
-            toast.error(error.data.message || 'ثبت سازمان با مشکل مواجه شد')
+            toast.error(error.data.message || 'ثبت نقش در سازمان با مشکل مواجه شد')
         }
     })
 

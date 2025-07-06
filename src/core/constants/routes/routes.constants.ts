@@ -10,7 +10,12 @@ const Routes = {
 
     ManageOrganTypes: () => Routes.Panel() + '/manage-organ-types',
 
-    ManageRoleTypes: () => Routes.Panel() + '/manage-role'
+    ManageRoleTypes: () => Routes.Panel() + '/manage-role',
+
+    CreateReport: () => Routes.Panel() + '/create-report',
+
+    FillReport: () => Routes.Panel() + '/fill-report',
+    FillReportForm: (reportId: string | number) => Routes.FillReport() + `/${reportId}/form`
 }
 
 export default Routes

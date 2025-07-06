@@ -14,12 +14,12 @@ const SIDEBAR_LIST = [
             {
                 title: 'ثبت آمار',
                 icon: <ChartColumn size={20} />,
-                href: '/chart-column'
+                href: Routes.FillReport()
             },
             {
-                title: 'گزارش گیری',
+                title: 'ساخت گزارش',
                 icon: <ChartNetworkIcon size={20} />,
-                href: '/chart'
+                href: Routes.CreateReport()
             }
         ]
     },
@@ -54,12 +54,7 @@ const SIDEBAR_LIST = [
             {
                 title: 'وزارت آموزش و پرورش',
                 icon: <ExternalLinkIcon size={20} />,
-                href: '/external-link-1'
-            },
-            {
-                title: 'درگاه ملی مجوز ها',
-                icon: <ExternalLinkIcon size={20} />,
-                href: '/external-link-2'
+                href: 'https://my.medu.ir/'
             }
         ]
     }

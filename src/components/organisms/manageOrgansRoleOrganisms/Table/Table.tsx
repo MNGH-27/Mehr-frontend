@@ -1,23 +1,20 @@
 'use client'
 
 import { type FC, useState } from 'react'
-import Link from 'next/link'
-import { Building2, MinusSquare, UserCog2, UserPen } from 'lucide-react'
+import { MinusSquare, UserMinus2 } from 'lucide-react'
 
 import { STable } from '@molecules/STable'
 
 import { SButton } from '@atoms/SButton'
 import { SModal } from '@atoms/SModal'
 
-import { Routes } from '@core/constants/routes'
-import { type TOrganListItemType } from '@core/types/api/organ.types'
+import { type TUserInOrganItemType } from '@core/types/api/users.types'
 import { type TModalStateType } from '@core/types/modal-state-types'
 
-import { DeleteOrganModal, EditOrganModal, type IManageOrgansRoleTableProps, TABLE_HEAD } from './resources'
+import { DeleteOrganModal, type IManageOrgansRoleTableProps, TABLE_HEAD } from './resources'
 
 const ManageOrgansRoleTable: FC<IManageOrgansRoleTableProps> = ({ data }) => {
-    const [deleteModal, setDeleteModal] = useState<TModalStateType<TOrganListItemType>>({ isShow: false })
-    const [editModal, setEditModal] = useState<TModalStateType<TOrganListItemType>>({ isShow: false })
+    const [deleteModal, setDeleteModal] = useState<TModalStateType<TUserInOrganItemType>>({ isShow: false })
 
     return (
         <>
@@ -25,39 +22,20 @@ const ManageOrgansRoleTable: FC<IManageOrgansRoleTableProps> = ({ data }) => {
                 {data?.map((data, index) => (
                     <STable.Tr index={index} key={index}>
                         <STable.Td>{index + 1}</STable.Td>
-                        <STable.Td>{data.name} </STable.Td>
-                        <STable.Td>{data.phoneNumber}</STable.Td>
-                        <STable.Td>{data.stateName}</STable.Td>
-                        <STable.Td>{data.regionName}</STable.Td>
-                        <STable.Td>{data.fullAddress}</STable.Td>
-                        <STable.Td>{data.organLevelTitle ?? '-'}</STable.Td>
+                        <STable.Td>{data.userFullName} </STable.Td>
+                        <STable.Td>{data.userNatId}</STable.Td>
+                        <STable.Td>{data.userPhoneNumber}</STable.Td>
+                        <STable.Td>{data.roleName}</STable.Td>
 
                         <STable.Td>
                             <div className='flex items-center justify-center gap-x-5'>
-                                <SButton
-                                    component={Link}
-                                    href={Routes.ManageOrgansRole(data.id)}
-                                    size='None'
-                                    variant='TextPrimary'
-                                >
-                                    <UserCog2 size={20} />
-                                    مدیریت نقش های سازمان
-                                </SButton>
                                 <SButton
                                     onClick={() => setDeleteModal({ isShow: true, data })}
                                     size='None'
                                     variant='TextError'
                                 >
-                                    <Building2 size={20} />
+                                    <UserMinus2 size={20} />
                                     حذف
-                                </SButton>
-                                <SButton
-                                    onClick={() => setEditModal({ isShow: true, data })}
-                                    size='None'
-                                    variant='TextPrimary'
-                                >
-                                    <Building2 size={20} />
-                                    ویرایش
                                 </SButton>
                             </div>
                         </STable.Td>
@@ -67,27 +45,14 @@ const ManageOrgansRoleTable: FC<IManageOrgansRoleTableProps> = ({ data }) => {
 
             <SModal
                 topSection={{
-                    title: 'حذف سازمان',
-                    description: 'با حذف سازمان، دسترسی های آن سازمان از دست خواهد رفت',
+                    title: `حذف نقش (${deleteModal.data?.roleName}) از شخص (${deleteModal.data?.userFullName})`,
+                    description: 'با حذف نقش از این شخص دسترسی های آن در سازمان از دست خواهد رفت',
                     icon: <MinusSquare size={20} />
                 }}
                 onClose={() => setDeleteModal({ isShow: false })}
                 opened={deleteModal.isShow}
             >
                 <DeleteOrganModal onClose={() => setDeleteModal({ isShow: false })} data={deleteModal.data} />
-            </SModal>
-
-            <SModal
-                topSection={{
-                    title: 'ویرایش سازمان',
-                    description:
-                        'در ویرایش اطلاعات سازمان دقت کنید تغییر برخی اطلاعات ممکن است باعث اختلال در روند کار شود',
-                    icon: <UserPen size={20} />
-                }}
-                onClose={() => setEditModal({ isShow: false })}
-                opened={editModal.isShow}
-            >
-                <EditOrganModal onClose={() => setEditModal({ isShow: false })} data={editModal.data} />
             </SModal>
         </>
     )

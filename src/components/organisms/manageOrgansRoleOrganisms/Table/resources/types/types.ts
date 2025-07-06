@@ -1,7 +1,7 @@
-import { type TOrganListItemType } from '@core/types/api/organ.types'
+import { type TUserInOrganItemType } from '@core/types/api/users.types'
 
 interface IManageOrgansRoleTableProps {
-    data?: TOrganListItemType[]
+    data?: TUserInOrganItemType[]
 }
 
 export default IManageOrgansRoleTableProps
