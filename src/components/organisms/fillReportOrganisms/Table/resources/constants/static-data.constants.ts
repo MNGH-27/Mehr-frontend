@@ -12,6 +12,9 @@ const TABLE_HEAD = [
         title: 'نوع گزارش'
     },
     {
+        title: 'مقدار وارد شده'
+    },
+    {
         title: 'عملیات'
     }
 ]

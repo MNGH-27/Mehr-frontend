@@ -1,7 +1,7 @@
 import { type FC, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
-import { Layers2, Notebook, NotebookPen, Phone, PlusSquare } from 'lucide-react'
+import { Layers2, Notebook, NotebookPen, Phone, PlusSquare, X } from 'lucide-react'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
@@ -26,10 +26,13 @@ const AddReportModal: FC<IAddReportModalProps> = ({ onClose }) => {
     const {
         handleSubmit,
         formState: { errors },
-        control
+        control,
+        watch
     } = useForm<TAddReportForm>({
         resolver: yupResolver(addUserSchema)
     })
+
+    const reportItemTypeIdWatch = watch('reportItemType')
 
     const { mutate, isPending } = useMutation({
         mutationFn: postCreateNewReportItemMutationFn,
@@ -38,7 +41,7 @@ const AddReportModal: FC<IAddReportModalProps> = ({ onClose }) => {
 
             //invalidate queryKeys
             queryClient.invalidateQueries({
-                queryKey: [QueryKeysEnum.AllOrgan]
+                queryKey: [QueryKeysEnum.ReportItemsByRegionId]
             })
 
             //close modal
@@ -53,7 +56,10 @@ const AddReportModal: FC<IAddReportModalProps> = ({ onClose }) => {
         <form
             className='grid gap-5'
             onSubmit={handleSubmit((value) => {
-                if (itemsList.filter((item) => item.name.trim().length !== 0).length === 0) {
+                if (
+                    itemsList.filter((item) => item.name.trim().length !== 0).length === 0 &&
+                    (reportItemTypeIdWatch === '4' || reportItemTypeIdWatch === '5')
+                ) {
                     toast.error('حداقل یک سوال را باید وارد کنید')
                     return
                 }
@@ -95,54 +101,82 @@ const AddReportModal: FC<IAddReportModalProps> = ({ onClose }) => {
                             data={REPORT_TYPE_LIST}
                             leftSection={<Layers2 />}
                             {...field}
+                            onChange={(value) => {
+                                field.onChange(value)
+
+                                setItemsList([{ id: 0, name: '' }])
+                            }}
                             placeholder='نوع گزارش را انتخاب کنید'
                         />
                     </SInputField>
                 )}
             />
 
-            <div>
-                <span className='text-lg font-medium'>سوالات را وارد کنید</span>
-                {itemsList.map((item, index) => (
-                    <SInputField key={index} label={`_${index + 1}`} errors={{}} name={''} className='mb-5'>
-                        <SInput
-                            onChange={(value) =>
-                                setItemsList((prevState) =>
-                                    prevState.map((prevItem, prevIndex) =>
-                                        prevIndex === index
-                                            ? {
-                                                  id: index,
-                                                  name: value
-                                              }
-                                            : prevItem
+            {(reportItemTypeIdWatch === '4' || reportItemTypeIdWatch === '5') && (
+                <div>
+                    <span className='text-lg font-medium'>گزینه ها را وارد کنید</span>
+                    {itemsList.map((item, index) => (
+                        <SInputField
+                            key={index}
+                            label={`_${index + 1}`}
+                            errors={{}}
+                            name={''}
+                            className='mb-5 relative'
+                        >
+                            <SButton
+                                type='button'
+                                onClick={() => {
+                                    if (itemsList.length !== 1)
+                                        setItemsList((prevState) =>
+                                            prevState.filter((_, prevIndex) => prevIndex !== index)
+                                        )
+                                }}
+                                variant='TextError'
+                                size='None'
+                                className='absolute left-0 top-0'
+                            >
+                                <X />
+                                حذف
+                            </SButton>
+                            <SInput
+                                onChange={(value) =>
+                                    setItemsList((prevState) =>
+                                        prevState.map((prevItem, prevIndex) =>
+                                            prevIndex === index
+                                                ? {
+                                                      id: index,
+                                                      name: value
+                                                  }
+                                                : prevItem
+                                        )
                                     )
-                                )
-                            }
-                            value={item.name ?? ''}
-                            leftSection={<Phone />}
-                            placeholder={`عنوان سوال ${index + 1} را وارد کنید`}
-                        />
-                    </SInputField>
-                ))}
-                <div className='mt-5 flex items-center justify-center gap-x-1 w-full after:block after:w-full after:h-[1px] after:bg-primary before:block before:w-full before:h-[1px] before:bg-primary'>
-                    <SButton
-                        type='button'
-                        onClick={() => {
-                            if (itemsList[itemsList.length - 1].name.trim().length === 0) {
-                                toast.error('ابتدا باید موارد قبلی را پر کنید')
-                                return
-                            }
-                            setItemsList((prevState) => prevState.concat([{ id: prevState.length, name: '' }]))
-                        }}
-                        variant='TextPrimary'
-                        size='None'
-                        className='shrink-0'
-                    >
-                        افزودن سوال جدید
-                        <PlusSquare />
-                    </SButton>
+                                }
+                                value={item.name ?? ''}
+                                leftSection={<Phone />}
+                                placeholder={`عنوان گزینه ${index + 1} را وارد کنید`}
+                            />
+                        </SInputField>
+                    ))}
+                    <div className='mt-5 flex items-center justify-center gap-x-1 w-full after:block after:w-full after:h-[1px] after:bg-primary before:block before:w-full before:h-[1px] before:bg-primary'>
+                        <SButton
+                            type='button'
+                            onClick={() => {
+                                if (itemsList[itemsList.length - 1].name.trim().length === 0) {
+                                    toast.error('ابتدا باید موارد قبلی را پر کنید')
+                                    return
+                                }
+                                setItemsList((prevState) => prevState.concat([{ id: prevState.length, name: '' }]))
+                            }}
+                            variant='TextPrimary'
+                            size='None'
+                            className='shrink-0'
+                        >
+                            افزودن گزینه جدید
+                            <PlusSquare />
+                        </SButton>
+                    </div>
                 </div>
-            </div>
+            )}
 
             <div className='col-span-full flex items-center justify-end gap-3'>
                 <SButton type='button' onClick={onClose} size='M' variant='OutlineSecondary'>

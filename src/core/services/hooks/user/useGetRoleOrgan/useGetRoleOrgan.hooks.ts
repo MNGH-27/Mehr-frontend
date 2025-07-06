@@ -2,8 +2,8 @@ import { useQuery, type UseQueryResult } from '@tanstack/react-query'
 
 import { QueryKeysEnum } from '@core/enums/query-keys'
 import { axiosRequestHandler } from '@core/services/axios'
-import { TUserRoleListItem } from '@core/types/api/user-role.types'
-import { TWithOutPaginateDataType } from '@core/types/with-out-paginate-data'
+import { type TUserRoleListItem } from '@core/types/api/user-role.types'
+import { type TWithOutPaginateDataType } from '@core/types/with-out-paginate-data'
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 type TUseGetRoleOrganType = {

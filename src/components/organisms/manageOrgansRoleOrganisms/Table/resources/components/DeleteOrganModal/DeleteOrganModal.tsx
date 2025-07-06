@@ -10,6 +10,7 @@ import { type TCriticalAny } from '@core/types/type-any'
 
 import { type IDeleteOrganModalProps } from './resources'
 
+
 const DeleteOrganModal: FC<IDeleteOrganModalProps> = ({ onClose, data }) => {
     const queryClient = useQueryClient()
 
@@ -20,7 +21,7 @@ const DeleteOrganModal: FC<IDeleteOrganModalProps> = ({ onClose, data }) => {
 
             //invalidate queryKeys
             queryClient.invalidateQueries({
-                queryKey: [QueryKeysEnum.AllOrgan]
+                queryKey: [QueryKeysEnum.AllUserInOrgan]
             })
 
             //close modal

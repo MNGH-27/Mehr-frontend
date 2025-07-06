@@ -1,16 +1,10 @@
 import { type FC } from 'react'
-import { toast } from 'react-toastify'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
 
-import { SButton } from '@atoms/SButton'
-
-import { QueryKeysEnum } from '@core/enums/query-keys'
-import { deleteUserMutationFn } from '@core/services/api/user/delete-user'
-import { type TCriticalAny } from '@core/types/type-any'
-import { TUserListItemType } from '@core/types/api/users.types'
-import { useGetRoleOrgan } from '@core/services/hooks/user/useGetRoleOrgan'
-import { LoadingBoundary } from '@partials/boundaries/Loading'
 import { ErrorBoundary } from '@partials/boundaries/Error'
+import { LoadingBoundary } from '@partials/boundaries/Loading'
+
+import { useGetRoleOrgan } from '@core/services/hooks/user/useGetRoleOrgan'
+import { type TUserListItemType } from '@core/types/api/users.types'
 
 interface IUserRoleModalProps {
     data?: TUserListItemType

@@ -13,9 +13,9 @@ const Routes = {
     ManageRoleTypes: () => Routes.Panel() + '/manage-role',
 
     CreateReport: () => Routes.Panel() + '/create-report',
+    CreateReportDetail: (reportId: string | number) => Routes.CreateReport() + `/${reportId}`,
 
-    FillReport: () => Routes.Panel() + '/fill-report',
-    FillReportForm: (reportId: string | number) => Routes.FillReport() + `/${reportId}/form`
+    FillReport: () => Routes.Panel() + '/fill-report'
 }
 
 export default Routes

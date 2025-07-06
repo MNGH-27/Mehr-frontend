@@ -18,20 +18,20 @@ export const ORGAN_LEVEL_LIST = [
 ]
  
 export const REPORT_TYPE_LIST = [
-    {
-        label: 'متنی',
-        value: '1'
-    },
+    // {
+    //     label: 'متنی',
+    //     value: '1'
+    // },
     {
         label: 'عددی',
         value: '2'
-    },
-    {
-        label: 'انتخابی',
-        value: '3'
-    },
-    {
-        label: 'چند انتخابی',
-        value: '4'
     }
+    // {
+    //     label: 'انتخابی',
+    //     value: '4'
+    // },
+    // {
+    //     label: 'چند انتخابی',
+    //     value: '5'
+    // }
 ]

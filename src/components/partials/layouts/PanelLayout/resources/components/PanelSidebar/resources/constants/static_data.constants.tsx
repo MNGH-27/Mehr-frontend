@@ -15,11 +15,6 @@ const SIDEBAR_LIST = [
                 title: 'ثبت آمار',
                 icon: <ChartColumn size={20} />,
                 href: Routes.FillReport()
-            },
-            {
-                title: 'ساخت گزارش',
-                icon: <ChartNetworkIcon size={20} />,
-                href: Routes.CreateReport()
             }
         ]
     },
@@ -45,6 +40,11 @@ const SIDEBAR_LIST = [
                 title: 'مدیریت نقش ها',
                 icon: <UserSquare2 size={20} />,
                 href: Routes.ManageRoleTypes()
+            },
+            {
+                title: 'مدیریت گزارش',
+                icon: <ChartNetworkIcon size={20} />,
+                href: Routes.CreateReport()
             }
         ]
     },
