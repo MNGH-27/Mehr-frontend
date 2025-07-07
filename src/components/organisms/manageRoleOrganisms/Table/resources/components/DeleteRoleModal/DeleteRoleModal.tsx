@@ -5,7 +5,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { SButton } from '@atoms/SButton'
 
 import { QueryKeysEnum } from '@core/enums/query-keys'
-import { deleteRoleMutationFn } from '@core/services/api/role/delete-role'
+import { deleteRoleMutationFn } from '@core/services/api/Role/delete-role'
 import { type TCriticalAny } from '@core/types/type-any'
 
 import { type IDeleteRoleModalProps } from './resources'

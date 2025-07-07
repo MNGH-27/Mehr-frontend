@@ -11,7 +11,7 @@ import { SButton } from '@atoms/SButton'
 import { SInput } from '@atoms/SInput'
 
 import { QueryKeysEnum } from '@core/enums/query-keys'
-import { putUpdateRoleMutationFn } from '@core/services/api/role/put-update-role'
+import { putUpdateRoleMutationFn } from '@core/services/api/Role/put-update-role'
 import { type TCriticalAny } from '@core/types/type-any'
 
 import { addUserSchema, type IUpdateRoleModalProps, type TUpdateRoleForm } from './resources'
