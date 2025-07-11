@@ -3,13 +3,13 @@ const TABLE_HEAD = [
         title: 'ردیف'
     },
     {
-        title: 'عنوان'
+        title: 'نام گزارش دهنده'
     },
     {
-        title: 'توضیح'
+        title: 'عنوان گزارش'
     },
     {
-        title: 'نوع گزارش'
+        title: 'نام ارگان'
     },
     {
         title: 'مقدار وارد شده'

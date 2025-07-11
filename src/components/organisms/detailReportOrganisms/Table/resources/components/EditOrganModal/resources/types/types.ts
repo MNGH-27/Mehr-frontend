@@ -1,8 +1,8 @@
-import { type TReportByRegionItemType } from '@core/types/api/report.type'
+import { type TReportItemType } from '@core/types/api/report.type'
 
 interface IAddReportModalProps {
     onClose: () => void
-    data?: TReportByRegionItemType
+    data?: TReportItemType
 }
 
 type TAddReportForm = {

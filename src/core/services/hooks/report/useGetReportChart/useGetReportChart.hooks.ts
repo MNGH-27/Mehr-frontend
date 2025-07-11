@@ -2,27 +2,28 @@ import { useQuery, type UseQueryResult } from '@tanstack/react-query'
 
 import { QueryKeysEnum } from '@core/enums/query-keys'
 import { axiosRequestHandler } from '@core/services/axios'
-import { type TReportByRegionItemType } from '@core/types/api/report.type'
+import { type TReportOfProvinceItemType } from '@core/types/api/report.type'
 import { type TWithOutPaginateDataType } from '@core/types/with-out-paginate-data'
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
-type TUseGetReportItemsByRegionIdType = {
+type TUseGetReportChartType = {
     StateId?: string | number | null
     RegionId?: string | number | null
     ReportItemId?: string | number | null
+    ReportLevel?: string | number | null
 }
 
-const useGetReportItemsByRegionId = (
-    params: TUseGetReportItemsByRegionIdType
-): UseQueryResult<TWithOutPaginateDataType<TReportByRegionItemType[]>> =>
+const useGetReportChart = (
+    params: TUseGetReportChartType
+): UseQueryResult<TWithOutPaginateDataType<TReportOfProvinceItemType[]>> =>
     useQuery({
-        queryKey: [QueryKeysEnum.ReportItemsByRegionId, { ...params }],
+        queryKey: [QueryKeysEnum.ReportChart, { ...params }],
         queryFn: async () =>
             await axiosRequestHandler({
-                url: `Report/GetReportItemsByRegionId`,
+                url: `Report/GetReportChart`,
                 method: 'get',
                 params
             })
     })
 
-export default useGetReportItemsByRegionId
+export default useGetReportChart

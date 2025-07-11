@@ -1,7 +1,7 @@
 import { type FC, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
-import { Layers2, Notebook, NotebookPen, Phone, PlusSquare, X } from 'lucide-react'
+import { ChartArea, Layers2, Notebook, NotebookPen, Phone, PlusSquare, X } from 'lucide-react'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
@@ -11,7 +11,7 @@ import { SButton } from '@atoms/SButton'
 import { SInput } from '@atoms/SInput'
 import { SSelect } from '@atoms/SSelect'
 
-import { REPORT_TYPE_LIST } from '@core/constants/dummy-data'
+import { CHART_TYPE_LIST, REPORT_TYPE_LIST } from '@core/constants/dummy-data'
 import { QueryKeysEnum } from '@core/enums/query-keys'
 import { postCreateNewReportItemMutationFn } from '@core/services/api/report/post-create-new-report-item'
 import { type TIdNameType } from '@core/types/id-name/types'
@@ -68,7 +68,8 @@ const AddReportModal: FC<IAddReportModalProps> = ({ onClose }) => {
                     description: value.description,
                     reportItemType: +value.reportItemType,
                     title: value.title,
-                    items: itemsList.filter((item) => item.name.trim().length !== 0)
+                    items: itemsList.filter((item) => item.name.trim().length !== 0),
+                    reportChart: +value.reportChart
                 })
             })}
         >
@@ -88,6 +89,21 @@ const AddReportModal: FC<IAddReportModalProps> = ({ onClose }) => {
                 render={({ field }) => (
                     <SInputField label='توضیح' errors={errors} name={field.name}>
                         <SInput leftSection={<Notebook />} {...field} placeholder='توضیح را انتخاب کنید' />
+                    </SInputField>
+                )}
+            />
+
+            <Controller
+                name='reportChart'
+                control={control}
+                render={({ field }) => (
+                    <SInputField label='نوع نمودار' errors={errors} name={field.name}>
+                        <SSelect
+                            data={CHART_TYPE_LIST}
+                            leftSection={<ChartArea />}
+                            {...field}
+                            placeholder='نوع نمودار را انتخاب کنید'
+                        />
                     </SInputField>
                 )}
             />

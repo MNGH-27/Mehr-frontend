@@ -1,24 +1,35 @@
 'use client'
 
 
+import { NumberParam, useQueryParam } from 'use-query-params'
+
 import { FetchingBoundary } from '@partials/boundaries/Fetching'
 
 import { CreateReportFilter, CreateReportTable } from '@organisms/createReportOrganisms'
 
-import { useGetReportItemsByRegionId } from '@core/services/hooks/report/useGetReportItemsByRegionId'
+import { SPagination } from '@atoms/SPagination'
+
+import { useGetReportItems } from '@core/services/hooks/report/useGetReportItems'
 
 const CreateReportTemplate = () => {
+    const [page, setPage] = useQueryParam('page', NumberParam)
+
     const {
-        data: allOrgans,
-        isLoading: isLoadingAllOrgans,
-        isError: isErrorAllOrgans
-    } = useGetReportItemsByRegionId({})
+        data: allReports,
+        isLoading: isLoadingAllReports,
+        isError: isErrorAllReports
+    } = useGetReportItems({ pageNumber: page ?? 1, pageSize: 10 })
 
     return (
         <div className='space-y-5'>
             <CreateReportFilter />
-            <FetchingBoundary isError={isErrorAllOrgans} isLoading={isLoadingAllOrgans} length={allOrgans?.data.length}>
-                <CreateReportTable data={allOrgans?.data} />
+            <FetchingBoundary
+                isError={isErrorAllReports}
+                isLoading={isLoadingAllReports}
+                length={allReports?.data.data.length}
+            >
+                <CreateReportTable data={allReports?.data.data} />
+                <SPagination total={allReports?.data?.metaData?.totalPage ?? 0} value={page ?? 1} onChange={setPage} />
             </FetchingBoundary>
         </div>
     )

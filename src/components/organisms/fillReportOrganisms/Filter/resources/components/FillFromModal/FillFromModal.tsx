@@ -1,4 +1,4 @@
-import { type FC, useEffect, useState } from 'react'
+import { type FC, useState } from 'react'
 import { toast } from 'react-toastify'
 import { FileQuestion, NotebookPen } from 'lucide-react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
@@ -12,28 +12,19 @@ import { SSelect } from '@atoms/SSelect'
 import { QueryKeysEnum } from '@core/enums/query-keys'
 import { postFillReportItemForRegionMutationFn } from '@core/services/api/report/post-fill-report-item-for-region'
 import { useGetAllReportItem } from '@core/services/hooks/report/useGetAllReportItem'
-import { type TReportDataItemType } from '@core/types/api/report.type'
 import { type TCriticalAny } from '@core/types/type-any'
 import { convertDataSelectList } from '@core/utils/common/convert-data-select-list'
 
 interface IFillFromModalProps {
     onClose: () => void
-    data?: TReportDataItemType
 }
 
-const FillFromModal: FC<IFillFromModalProps> = ({ data, onClose }) => {
+const FillFromModal: FC<IFillFromModalProps> = ({ onClose }) => {
     const queryClient = useQueryClient()
     const [value, setValue] = useState<string>()
     const [reportId, setReportId] = useState('')
 
     const { data: allReportItems, isLoading: isLoadingAllReportItems } = useGetAllReportItem({})
-
-    useEffect(() => {
-        if (data) {
-            setValue(data.answerValue.toString() ?? '')
-            setReportId(data.reportItemId.toString() ?? '')
-        }
-    }, [data])
 
     const { mutate, isPending } = useMutation({
         mutationFn: postFillReportItemForRegionMutationFn,
@@ -57,7 +48,6 @@ const FillFromModal: FC<IFillFromModalProps> = ({ data, onClose }) => {
         <div className='space-y-5'>
             <SInputField label='' errors={{}} name={''}>
                 <SSelect
-                    disabled
                     leftSection={<NotebookPen />}
                     onChange={(value) => {
                         setReportId(value ?? '')

@@ -8,6 +8,7 @@ const postCreateNewReportItemMutationFn = async (data: {
         id: number
         name: string
     }[]
+    reportChart: number
 }) => {
     return await axiosRequestHandler({
         url: 'Report/CreateNewReportItem',

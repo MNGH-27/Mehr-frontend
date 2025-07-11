@@ -1,7 +1,7 @@
-import { type TReportByRegionItemType } from '@core/types/api/report.type'
+import { type TReportDataItemType } from '@core/types/api/report.type'
 
 interface IFillReportTableProps {
-    data?: TReportByRegionItemType[]
+    data?: TReportDataItemType[]
 }
 
 export default IFillReportTableProps

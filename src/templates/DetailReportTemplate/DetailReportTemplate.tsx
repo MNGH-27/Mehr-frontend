@@ -12,7 +12,7 @@ import {
     DetailReportTable
 } from '@organisms/detailReportOrganisms'
 
-import { useGetReportOfProvince } from '@core/services/hooks/report/useGetReportOfProvince'
+import { useGetReportChart } from '@core/services/hooks/report/useGetReportChart'
 
 const DetailReportTemplate = () => {
     const { reportId } = useParams<{ reportId: string }>()
@@ -24,21 +24,27 @@ const DetailReportTemplate = () => {
     })
 
     const {
-        data: allOrgans,
-        isLoading: isLoadingAllOrgans,
-        isError: isErrorAllOrgans
-    } = useGetReportOfProvince({
+        data: allReportCharts,
+        isLoading: isLoadingAllReportCharts,
+        isError: isErrorAllReportCharts
+    } = useGetReportChart({
         RegionId: query.regionId,
         StateId: query.stateId,
-        ReportItemId: reportId
+        ReportItemId: reportId,
+        ReportLevel: query.stateId && query.regionId ? '3' : query.stateId ? '2' : '1'
     })
 
     return (
         <div className='space-y-5'>
             <DetailReportHeader />
+
             <DetailReportFilter />
-            <FetchingBoundary isError={isErrorAllOrgans} isLoading={isLoadingAllOrgans} length={allOrgans?.data.length}>
-                <DetailReportTable data={allOrgans?.data} />
+            <FetchingBoundary
+                isError={isErrorAllReportCharts}
+                isLoading={isLoadingAllReportCharts}
+                length={allReportCharts?.data.length}
+            >
+                <DetailReportTable />
             </FetchingBoundary>
             <DetailReportFooter />
         </div>
