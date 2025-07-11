@@ -68,7 +68,7 @@ const AddReportModal: FC<IAddReportModalProps> = ({ onClose, data }) => {
                     reportItemType: Number(+value.reportItemType),
                     title: value.title,
                     items: itemsList.filter((item) => item.name.trim().length !== 0),
-                    // reportChart : 0
+                    reportChart : 0
                 })
             })}
         >
