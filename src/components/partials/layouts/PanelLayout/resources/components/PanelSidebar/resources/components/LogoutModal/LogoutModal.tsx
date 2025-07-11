@@ -32,7 +32,7 @@ const LogoutModal: FC<ILogoutModalProps> = ({ onClose }) => {
         <>
             <div className='flex flex-col items-center justify-center gap-y-1'>
                 <span className='text-blue-shade-900 text-xl sm:text-2xl font-medium'>
-                    آیا میخواهید از سامانه فسا خارج شوید ؟
+                    آیا میخواهید از سامانه مهر خارج شوید ؟
                 </span>
                 <span className='text-gray-600 text-xs sm:text-sm'>
                     با خروج از سامانه دسترسی شما به اطلاعات تا زمانی که دوباره اقدام به ورود کنید بسته خواهد شد.{' '}

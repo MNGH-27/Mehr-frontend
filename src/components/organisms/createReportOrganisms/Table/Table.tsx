@@ -22,11 +22,15 @@ const CreateReportTable: FC<ICreateReportTableProps> = ({ data }) => {
                         <STable.Td>{data.title} </STable.Td>
                         <STable.Td>{data.description}</STable.Td>
                         <STable.Td>{data.reportTypeTitle}</STable.Td>
+                        <STable.Td>{data.reportChartTitle}</STable.Td>
                         <STable.Td>
                             <div className='flex items-center justify-center'>
                                 <SButton
                                     component={Link}
-                                    href={Routes.CreateReportDetail(data.reportItemId)}
+                                    href={
+                                        Routes.CreateReportDetail(data.reportItemId) +
+                                        `?chart-type=${data.reportChart}&chart-name=${data.title}`
+                                    }
                                     variant='TextPrimary'
                                     size='None'
                                 >

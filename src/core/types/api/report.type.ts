@@ -1,4 +1,4 @@
-export type TReportByRegionItemType = {
+export type TReportItemType = {
     reportItemId: number
     title: string
     description: string
@@ -8,6 +8,8 @@ export type TReportByRegionItemType = {
     } | null
     reportItemType: number
     reportTypeTitle: string
+    reportChart: number
+    reportChartTitle: string
 }
 
 export type TReportOfProvinceItemType = {
@@ -16,4 +18,20 @@ export type TReportOfProvinceItemType = {
     reportItemId: number
     reportItemName: string
     sum: number
+}
+
+export type TReportDataItemType = {
+    userId: number
+    id: number
+    userFullName: string
+    reportItemId: number
+    reportItemTitle: string
+    answerValue: number
+    answerStr: null | string
+    stateId: number
+    stateName: string
+    regionId: number
+    regionName: string
+    organId: number
+    organName: string
 }
