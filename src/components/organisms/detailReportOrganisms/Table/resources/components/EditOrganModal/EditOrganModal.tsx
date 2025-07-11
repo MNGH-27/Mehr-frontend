@@ -66,9 +66,10 @@ const AddReportModal: FC<IAddReportModalProps> = ({ onClose, data }) => {
 
                 mutate({
                     description: value.description,
-                    reportItemType: +value.reportItemType,
+                    reportItemType: Number(+value.reportItemType),
                     title: value.title,
-                    items: itemsList.filter((item) => item.name.trim().length !== 0)
+                    items: itemsList.filter((item) => item.name.trim().length !== 0),
+                    reportChart: 0
                 })
             })}
         >
