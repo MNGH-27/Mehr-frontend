@@ -63,12 +63,12 @@ const AddReportModal: FC<IAddReportModalProps> = ({ onClose, data }) => {
                     toast.error('حداقل یک سوال را باید وارد کنید')
                     return
                 }
-
                 mutate({
                     description: value.description,
-                    reportItemType:Number(+value.reportItemType),
+                    reportItemType: Number(+value.reportItemType),
                     title: value.title,
-                    items: itemsList.filter((item) => item.name.trim().length !== 0)
+                    items: itemsList.filter((item) => item.name.trim().length !== 0),
+                    reportChart : 0
                 })
             })}
         >
