@@ -78,7 +78,10 @@ const PanelSidebar: FC<IPanelSidebarProps> = ({ closeSidebarHandler, isShowSideb
                         )
                     })}
                 </div>
-                <Link href={Routes.Profile()} className='flex w-full items-center justify-between cursor-pointer mt-5'>
+                <Link
+                    href={Routes.Profile()}
+                    className={`${pathname === Routes.Profile() ? '!bg-white shadow-[0_0_4px_0_rgba(0,0,0,0.15)] !text-primary-tinted-950' : ''} p-3 rounded-lg duration-300 hover:bg-white hover:text-primary-tinted-950 flex w-full items-center justify-between cursor-pointer mt-5`}
+                >
                     <div className='flex items-center justify-start gap-x-2'>
                         <Image src='/images/user-frame.png' alt='user-frame' width={40} height={40} />
                         <div className='flex flex-col gap-y-1'>

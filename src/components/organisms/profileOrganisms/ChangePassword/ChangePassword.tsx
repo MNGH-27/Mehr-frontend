@@ -12,7 +12,7 @@ import { SButton } from '@atoms/SButton'
 import { SInput } from '@atoms/SInput'
 
 import { QueryKeysEnum } from '@core/enums/query-keys'
-import { putUpdateUserMutationFn } from '@core/services/api/user/put-update-user'
+import { putUpdatePassWordMutationFn } from '@core/services/api/user/put-update-pass-word'
 import { type TCriticalAny } from '@core/types/type-any'
 
 import { changePasswordSchema, type IChangePasswordProps, type TChangePasswordTypeForm } from './resources'
@@ -29,7 +29,7 @@ const ChangePassword: FC<IChangePasswordProps> = () => {
     })
 
     const { mutate, isPending } = useMutation({
-        mutationFn: putUpdateUserMutationFn,
+        mutationFn: putUpdatePassWordMutationFn,
         onSuccess: (response: TCriticalAny) => {
             if (response.data.message) {
                 toast.success(response.data.message)
@@ -50,13 +50,7 @@ const ChangePassword: FC<IChangePasswordProps> = () => {
             className='grid md:grid-cols-2 gap-5'
             onSubmit={handleSubmit((value) =>
                 mutate({
-                    fistName: '',
-                    lastName: '',
-                    phoneNumber: '',
-                    password: value.password,
-                    birthDate: '',
-                    natId: '',
-                    userId: 1
+                    Pass: value.password
                 })
             )}
         >

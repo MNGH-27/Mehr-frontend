@@ -26,6 +26,8 @@ export type TUserInOrganItemType = {
 
 export type TUserDetailType = {
     fullName: string
+    firstName: string
+    lastName: string
     natId: string
     phonenumber: string
     birthDate: Date
