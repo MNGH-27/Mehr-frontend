@@ -23,3 +23,10 @@ export type TUserInOrganItemType = {
     userPhoneNumber: string
     roleName: string
 }
+
+export type TUserDetailType = {
+    fullName: string
+    natId: string
+    phonenumber: string
+    birthDate: Date
+}

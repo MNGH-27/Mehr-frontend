@@ -2,6 +2,7 @@
 
 import { type FC, useEffect, useState } from 'react'
 import Image from 'next/image'
+import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { ArrowRightToLineIcon, ChevronLeft } from 'lucide-react'
 import { useDisclosure } from '@mantine/hooks'
@@ -9,6 +10,8 @@ import { useDisclosure } from '@mantine/hooks'
 import { SButton } from '@atoms/SButton'
 import { SModal } from '@atoms/SModal'
 import { SNavLink } from '@atoms/SNavLink'
+
+import { Routes } from '@core/constants/routes'
 
 import { type IPanelSidebarProps, LogoutModal, SIDEBAR_LIST } from './resources'
 
@@ -75,7 +78,7 @@ const PanelSidebar: FC<IPanelSidebarProps> = ({ closeSidebarHandler, isShowSideb
                         )
                     })}
                 </div>
-                <div className='flex w-full items-center justify-between cursor-pointer mt-5'>
+                <Link href={Routes.Profile()} className='flex w-full items-center justify-between cursor-pointer mt-5'>
                     <div className='flex items-center justify-start gap-x-2'>
                         <Image src='/images/user-frame.png' alt='user-frame' width={40} height={40} />
                         <div className='flex flex-col gap-y-1'>
@@ -85,7 +88,7 @@ const PanelSidebar: FC<IPanelSidebarProps> = ({ closeSidebarHandler, isShowSideb
                     </div>
 
                     <ChevronLeft />
-                </div>
+                </Link>
             </aside>
 
             <SModal onClose={onCloseLogoutModal} opened={isShowLogoutModal}>

@@ -3,6 +3,8 @@ const Routes = {
 
     Panel: () => '/panel',
 
+    Profile: () => Routes.Panel() + '/profile',
+
     Users: () => Routes.Panel() + '/users',
 
     ManageOrgans: () => Routes.Panel() + '/manage-organs',

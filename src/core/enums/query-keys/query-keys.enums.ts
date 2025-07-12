@@ -2,6 +2,7 @@ enum QueryKeysEnum {
     Captcha = 'Captcha',
     UserInfoByNatId = 'UserInfoByNatId',
     AllUser = 'AllUser',
+    PersonalInfo = 'PersonalInfo',
     AllUserInOrgan = 'AllUserInOrgan',
     AllOrgan = 'AllOrgan',
     ReportOfProvince = 'ReportOfProvince',

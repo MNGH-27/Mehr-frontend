@@ -18,7 +18,7 @@ const DetailReportTemplate = () => {
     const { reportId } = useParams<{ reportId: string }>()
 
     const [query] = useQueryParams({
-        name: StringParam,
+        reportLevel: StringParam,
         stateId: StringParam,
         regionId: StringParam
     })
@@ -31,7 +31,7 @@ const DetailReportTemplate = () => {
         RegionId: query.regionId,
         StateId: query.stateId,
         ReportItemId: reportId,
-        ReportLevel: query.stateId && query.regionId ? '3' : query.stateId ? '2' : '1'
+        ReportLevel: query.reportLevel
     })
 
     return (
