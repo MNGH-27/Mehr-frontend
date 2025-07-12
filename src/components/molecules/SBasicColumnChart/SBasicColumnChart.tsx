@@ -6,13 +6,12 @@ import HighchartsReact from 'highcharts-react-official'
 
 import { type TReportChartItemType } from '@core/types/api/report.type'
 
-interface ISBasicBarChartProps {
+interface SBasicColumnChartProps {
     chartName: string
     data?: TReportChartItemType[]
 }
 
-const SBasicBarChart: FC<ISBasicBarChartProps> = ({ chartName, data = [] }) => {
-    // تشخیص سطح دسته‌بندی
+const SBasicColumnChart: FC<SBasicColumnChartProps> = ({ chartName, data = [] }) => {
     const hasState = data.some((item) => item.stateId)
     const hasRegion = !hasState && data.some((item) => item.regionId)
 
@@ -42,7 +41,7 @@ const SBasicBarChart: FC<ISBasicBarChartProps> = ({ chartName, data = [] }) => {
 
     const options: Highcharts.Options = {
         chart: {
-            type: 'bar'
+            type: 'column'
         },
         title: {
             text: chartName
@@ -51,14 +50,6 @@ const SBasicBarChart: FC<ISBasicBarChartProps> = ({ chartName, data = [] }) => {
             categories,
             title: {
                 text: 'دسته‌ها'
-            }
-        },
-
-        tooltip: {
-            formatter: function () {
-                const val = this.y as number
-                const valueInThousands = val
-                return `${Highcharts.numberFormat(valueInThousands, 0)} واحد`
             }
         },
         yAxis: {
@@ -71,12 +62,25 @@ const SBasicBarChart: FC<ISBasicBarChartProps> = ({ chartName, data = [] }) => {
                 overflow: 'justify',
                 formatter: function () {
                     const val = this.value as number
-                    return `${Highcharts.numberFormat(val, 0)} واحد`
+                    return `${Highcharts.numberFormat(val / 1000, 0)} هزار`
                 }
             }
         },
+        tooltip: {
+            useHTML: true,
+            formatter: function () {
+                const val = this.y as number
+                const label = this.x as string
+                return `
+          <div style="text-align: right;">
+            <strong>${Highcharts.numberFormat(val / 1000, 0)} هزار واحد</strong><br/>
+            <span style="font-size: 12px; color: #666;">${label}</span>
+          </div>
+        `
+            }
+        },
         plotOptions: {
-            bar: {
+            column: {
                 dataLabels: {
                     enabled: true
                 }
@@ -88,7 +92,7 @@ const SBasicBarChart: FC<ISBasicBarChartProps> = ({ chartName, data = [] }) => {
         series: [
             {
                 name: 'مقدار',
-                type: 'bar',
+                type: 'column',
                 data: seriesData
             }
         ]
@@ -97,4 +101,4 @@ const SBasicBarChart: FC<ISBasicBarChartProps> = ({ chartName, data = [] }) => {
     return <HighchartsReact highcharts={Highcharts} options={options} />
 }
 
-export default SBasicBarChart
+export default SBasicColumnChart

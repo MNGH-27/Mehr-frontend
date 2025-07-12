@@ -35,3 +35,15 @@ export type TReportDataItemType = {
     organId: number
     organName: string
 }
+
+export type TReportChartItemType = {
+    reportItemId: number
+    stateId: number | null
+    stateName: string | null
+    regionId: number | null
+    regionName: string | null
+    title: string
+    sumTotal: number
+    date: string
+    dateNum: number | null
+}

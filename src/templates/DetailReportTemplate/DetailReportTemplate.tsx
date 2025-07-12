@@ -44,7 +44,7 @@ const DetailReportTemplate = () => {
                 isLoading={isLoadingAllReportCharts}
                 length={allReportCharts?.data.length}
             >
-                <DetailReportTable />
+                <DetailReportTable data={allReportCharts?.data} />
             </FetchingBoundary>
             <DetailReportFooter />
         </div>

@@ -3,19 +3,19 @@
 import { type FC } from 'react'
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
-import moment from 'moment-jalaali'
 
 import { type TReportChartItemType } from '@core/types/api/report.type'
 
-interface SLineChartProps {
+interface SAreaChartProps {
     chartName: string
     data?: TReportChartItemType[]
 }
 
-const SLineChart: FC<SLineChartProps> = ({ chartName, data = [] }) => {
+const SAreaChart: FC<SAreaChartProps> = ({ chartName, data = [] }) => {
     const hasRegion = data.some((item) => item.regionId)
     const hasState = !hasRegion && data.some((item) => item.stateId)
 
+    // استخراج تاریخ‌ها برای محور X
     const dateMap = new Map<string, number>()
     data.forEach((item) => {
         if (!dateMap.has(item.date)) {
@@ -24,6 +24,7 @@ const SLineChart: FC<SLineChartProps> = ({ chartName, data = [] }) => {
     })
     const dates = Array.from(dateMap.keys()).sort()
 
+    // گروه‌بندی داده‌ها
     const groupByKey = (key: keyof TReportChartItemType) => {
         const grouped = new Map<string, { [date: string]: number }>()
         data.forEach((item) => {
@@ -37,7 +38,7 @@ const SLineChart: FC<SLineChartProps> = ({ chartName, data = [] }) => {
 
         return Array.from(grouped.entries()).map(([name, values]) => ({
             name,
-            type: 'line' as const,
+            type: 'area' as const,
             data: dates.map((date) => values[date] || 0)
         }))
     }
@@ -56,7 +57,7 @@ const SLineChart: FC<SLineChartProps> = ({ chartName, data = [] }) => {
         series = [
             {
                 name: 'مجموع کل',
-                type: 'line',
+                type: 'area',
                 data: dates.map((date) => totalByDate[date] || 0)
             }
         ]
@@ -64,13 +65,13 @@ const SLineChart: FC<SLineChartProps> = ({ chartName, data = [] }) => {
 
     const options: Highcharts.Options = {
         chart: {
-            type: 'line'
+            type: 'area'
         },
         title: {
             text: chartName
         },
         xAxis: {
-            categories: dates.map((item) => moment(item).format('jYYYY/jMM/jDD')),
+            categories: dates,
             title: {
                 text: 'تاریخ'
             }
@@ -82,7 +83,7 @@ const SLineChart: FC<SLineChartProps> = ({ chartName, data = [] }) => {
             labels: {
                 formatter: function () {
                     const val = this.value as number
-                    return `${Highcharts.numberFormat(val, 0)} واحد`
+                    return `${Highcharts.numberFormat(val / 1000, 0)} هزار`
                 }
             }
         },
@@ -91,17 +92,16 @@ const SLineChart: FC<SLineChartProps> = ({ chartName, data = [] }) => {
             formatter: function () {
                 const val = this.y as number
                 const date = this.x as string
-
                 return `
-                <div style="text-align: right;">
-                  <strong>${Highcharts.numberFormat(val, 0)}  واحد</strong><br/>
-                  <span style="font-size: 12px; color: #666;">${date}</span>
-                </div>
-              `
+          <div style="text-align: right;">
+            <strong>${Highcharts.numberFormat(val, 0)} واحد</strong><br/>
+            <span style="font-size: 12px; color: #666;">${date}</span>
+          </div>
+        `
             }
         },
         plotOptions: {
-            line: {
+            area: {
                 dataLabels: {
                     enabled: true
                 },
@@ -117,4 +117,4 @@ const SLineChart: FC<SLineChartProps> = ({ chartName, data = [] }) => {
     return <HighchartsReact highcharts={Highcharts} options={options} />
 }
 
-export default SLineChart
+export default SAreaChart
