@@ -1,5 +1,6 @@
 'use client'
 
+
 import { ErrorBoundary } from '@partials/boundaries/Error'
 import { LoadingBoundary } from '@partials/boundaries/Loading'
 

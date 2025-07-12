@@ -18,8 +18,7 @@ const useGetRoleOrgan = (params: TUseGetRoleOrganType): UseQueryResult<TWithOutP
                 url: `User/GetRoleOrgan`,
                 method: 'get',
                 params
-            }),
-        enabled: !!params.UserId
+            })
     })
 
 export default useGetRoleOrgan

@@ -12,6 +12,8 @@ import { SModal } from '@atoms/SModal'
 import { SNavLink } from '@atoms/SNavLink'
 
 import { Routes } from '@core/constants/routes'
+import { type TCriticalAny } from '@core/types/type-any'
+import { type TUserLastRoleType } from '@core/types/user/user.types'
 
 import { type IPanelSidebarProps, LogoutModal, SIDEBAR_LIST } from './resources'
 
@@ -20,10 +22,12 @@ const PanelSidebar: FC<IPanelSidebarProps> = ({ closeSidebarHandler, isShowSideb
 
     const [isShowLogoutModal, { close: onCloseLogoutModal, open: onOpenLogoutModal }] = useDisclosure(false)
     const [fullName, setFullName] = useState('')
+    const [lastRole, setLastRole] = useState<TUserLastRoleType>()
 
     //get fullName from localStorage
     useEffect(() => {
         if (localStorage.getItem('fullName')) setFullName(localStorage.getItem('fullName') ?? '')
+        if (localStorage.getItem('lastRole')) setLastRole(JSON.parse(localStorage.getItem('lastRole') as TCriticalAny))
     }, [])
     const checkIsActive = (href: string) => (href !== '/panel' ? pathname.includes(href) : pathname === href)
 
@@ -86,7 +90,9 @@ const PanelSidebar: FC<IPanelSidebarProps> = ({ closeSidebarHandler, isShowSideb
                         <Image src='/images/user-frame.png' alt='user-frame' width={40} height={40} />
                         <div className='flex flex-col gap-y-1'>
                             <span className='font-semibold'>{fullName}</span>
-                            <span className='text-[10px]'>کارمند ثبت آمار</span>
+                            <span className='text-[10px]'>
+                                {lastRole?.roleName} در {lastRole?.organName}
+                            </span>
                         </div>
                     </div>
 
