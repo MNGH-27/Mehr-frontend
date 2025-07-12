@@ -1,8 +1,8 @@
-import { type TUserDataType } from '@core/types/api/user/user-data'
+import { type TUserDetailType } from '@core/types/api/users.types'
 
 interface IEditProfileModalProps {
     onClose: () => void
-    data?: TUserDataType
+    data?: TUserDetailType
 }
 
 type TUserFormTypeForm = {

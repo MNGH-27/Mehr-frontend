@@ -1,44 +1,30 @@
 import React, { type FC } from 'react'
-import { Controller, useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
-import { SInputField } from '@molecules/SInputField'
-
 import { SButton } from '@atoms/SButton'
-import { SInput } from '@atoms/SInput'
-import { SNumberInput } from '@atoms/SNumberInput'
-import { SSelect } from '@atoms/SSelect'
 
 import { QueryKeysEnum } from '@core/enums/query-keys'
-import { postUpdateSignUpUserMutationFn } from '@core/services/api/sign-up/post-update-signup-user'
-import { useGetAllCompanies } from '@core/services/hooks/company/useGetAllCompanies'
-import { useGetAllRoles } from '@core/services/hooks/user/useGetAllRoles'
+import { putUpdateUserMutationFn } from '@core/services/api/user/put-update-user'
 import { type TCriticalAny } from '@core/types/type-any'
-import { convertDataSelectList } from '@core/utils/common/convert-data-select-list'
 
 import { type IEditProfileModalProps, type TUserFormTypeForm, userFormTypeSchema } from './resources'
 
-const EditProfileModal: FC<IEditProfileModalProps> = ({ onClose, data }) => {
+const EditProfileModal: FC<IEditProfileModalProps> = ({ onClose }) => {
     const queryClient = useQueryClient()
 
     const {
-        handleSubmit,
-        formState: { errors },
-        control
+        handleSubmit
+        // formState: { errors },
+        // control
     } = useForm<TUserFormTypeForm>({
         resolver: yupResolver(userFormTypeSchema)
     })
 
-    const { data: companiesList, isLoading: isLoadingCompaniesList } = useGetAllCompanies({
-        pageNumber: 1,
-        pageSize: 1000
-    })
-    const { data: rolesList, isLoading: isLoadingRolesList } = useGetAllRoles({})
-
-    const { mutate, isPending } = useMutation({
-        mutationFn: postUpdateSignUpUserMutationFn,
+    const { isPending } = useMutation({
+        mutationFn: putUpdateUserMutationFn,
         onSuccess: (response: TCriticalAny) => {
             if (response.data.message) {
                 toast.success(response.data.message)
@@ -58,17 +44,8 @@ const EditProfileModal: FC<IEditProfileModalProps> = ({ onClose, data }) => {
     })
 
     return (
-        <form
-            className='grid md:grid-cols-2 gap-5'
-            onSubmit={handleSubmit((value) =>
-                mutate({
-                    ...value,
-                    companyId: +value.company,
-                    roleId: +value.role
-                })
-            )}
-        >
-            <Controller
+        <form className='grid md:grid-cols-2 gap-5' onSubmit={handleSubmit(() => {})}>
+            {/* <Controller
                 name='firstName'
                 control={control}
                 defaultValue={data?.firstName ?? ''}
@@ -157,7 +134,7 @@ const EditProfileModal: FC<IEditProfileModalProps> = ({ onClose, data }) => {
                         />
                     </SInputField>
                 )}
-            />
+            /> */}
             <div className='col-span-full flex items-center justify-end gap-3'>
                 <SButton onClick={onClose} type='button' size='M' variant='OutlinePrimary' className='!w-fit'>
                     بازگشت

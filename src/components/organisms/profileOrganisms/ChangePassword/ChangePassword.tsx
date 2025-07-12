@@ -17,7 +17,7 @@ import { type TCriticalAny } from '@core/types/type-any'
 
 import { changePasswordSchema, type IChangePasswordProps, type TChangePasswordTypeForm } from './resources'
 
-const ChangePassword: FC<IChangePasswordProps> = ({ data }) => {
+const ChangePassword: FC<IChangePasswordProps> = () => {
     const queryClient = useQueryClient()
 
     const {
@@ -51,8 +51,8 @@ const ChangePassword: FC<IChangePasswordProps> = ({ data }) => {
             onSubmit={handleSubmit((value) =>
                 mutate({
                     fistName: '',
-                    lastName: data?.lastName ?? '',
-                    phoneNumber: data?.phoneNumber ?? '',
+                    lastName: '',
+                    phoneNumber: '',
                     password: value.password,
                     birthDate: '',
                     natId: '',

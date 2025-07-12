@@ -1,4 +1,4 @@
-import { type TUserDataType } from '@core/types/api/user/user-data'
+import { type TUserDetailType } from '@core/types/api/users.types'
 
 type TChangePasswordTypeForm = {
     password: string
@@ -6,7 +6,7 @@ type TChangePasswordTypeForm = {
 }
 
 interface IChangePasswordProps {
-    data?: TUserDataType
+    data?: TUserDetailType
 }
 
 export type { IChangePasswordProps, TChangePasswordTypeForm }
