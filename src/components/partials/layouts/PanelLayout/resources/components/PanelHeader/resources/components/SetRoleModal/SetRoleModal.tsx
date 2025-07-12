@@ -39,7 +39,7 @@ const SetRoleModal: FC<ISetRoleModalProps> = ({ onClose }) => {
             toast.success('نقش با موفقیت تغییر کرد')
 
             //add new token
-            localStorage.setItem('token', response.data.newToken)
+            localStorage.setItem('token', response.data.token)
 
             //reset all queries
             queryClient.resetQueries()
@@ -48,7 +48,7 @@ const SetRoleModal: FC<ISetRoleModalProps> = ({ onClose }) => {
             expirationDate.setHours(expirationDate.getHours() + 6)
 
             //set new role and organ as lastRole in cookie
-            localStorage.setItem('lastRole', JSON.stringify(response.data))
+            localStorage.setItem('lastRole', JSON.stringify(response.data.lastUserRole))
 
             window.dispatchEvent(new CustomEvent('lastRoleChanged', { detail: response.data }))
             //close setRoleModal
