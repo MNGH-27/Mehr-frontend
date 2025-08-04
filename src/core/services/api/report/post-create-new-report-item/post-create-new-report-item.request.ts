@@ -3,12 +3,13 @@ import { axiosRequestHandler } from '@core/services/axios'
 const postCreateNewReportItemMutationFn = async (data: {
     title: string
     description: string
-    reportItemType: number
+    reportType: number
     items: {
         id: number
         name: string
     }[]
     reportChart: number
+    reportGradeType: number
 }) => {
     return await axiosRequestHandler({
         url: 'Report/CreateNewReportItem',

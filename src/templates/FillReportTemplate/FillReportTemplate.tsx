@@ -1,8 +1,9 @@
 'use client'
 
-import { NumberParam, useQueryParam } from 'use-query-params'
+import { NumberParam, StringParam, useQueryParam } from 'use-query-params'
 
 import { FetchingBoundary } from '@partials/boundaries/Fetching'
+import { NotFoundBoundary } from '@partials/boundaries/NotFound'
 
 import { FillReportFilter, FillReportTable } from '@organisms/fillReportOrganisms'
 
@@ -13,24 +14,33 @@ import { useGetReportData } from '@core/services/hooks/report/useGetReportData'
 const FillReportTemplate = () => {
     const [page, setPage] = useQueryParam('page', NumberParam)
     const [ReportItemId] = useQueryParam('ReportItemId', NumberParam)
-
+    const [StateId] = useQueryParam('stateId', StringParam)
+    const [RegionId] = useQueryParam('regionId', StringParam)
     const {
         data: allReports,
         isLoading: isLoadingAllReports,
         isError: isErrorAllReports
-    } = useGetReportData({ pageNumber: page ?? 1, pageSize: 10, ReportItemId })
+    } = useGetReportData({ pageNumber: page ?? 1, pageSize: 10, ReportType: ReportItemId, RegionId, StateId })
 
     return (
         <div className='space-y-5'>
             <FillReportFilter />
-            <FetchingBoundary
-                isError={isErrorAllReports}
-                isLoading={isLoadingAllReports}
-                length={allReports?.data.data.length}
-            >
-                <FillReportTable data={allReports?.data.data} />
-                <SPagination total={allReports?.data?.metaData?.totalPage ?? 0} value={page ?? 1} onChange={setPage} />
-            </FetchingBoundary>
+            {ReportItemId ? (
+                <FetchingBoundary
+                    isError={isErrorAllReports}
+                    isLoading={isLoadingAllReports}
+                    length={allReports?.data.data.length}
+                >
+                    <FillReportTable data={allReports?.data.data} />
+                    <SPagination
+                        total={allReports?.data?.metaData?.totalPage ?? 0}
+                        value={page ?? 1}
+                        onChange={setPage}
+                    />
+                </FetchingBoundary>
+            ) : (
+                <NotFoundBoundary text='ابتدا نوع گزارش را انتخاب کنید' />
+            )}
         </div>
     )
 }

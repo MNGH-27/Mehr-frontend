@@ -1,6 +1,4 @@
 'use client'
-
-import { useEffect } from 'react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { Controller, useForm } from 'react-hook-form'
@@ -19,12 +17,14 @@ import { SPasswordInput } from '@atoms/SPasswordInput'
 import { Routes } from '@core/constants/routes'
 import { postLoginUserMutationFn } from '@core/services/api/sign-up/post-login-user'
 import { useGetCaptcha } from '@core/services/hooks/basic-info/useGetCaptcha'
+import { useAuthStore } from '@core/services/stores/auth.store'
 import { type TCriticalAny } from '@core/types/type-any'
 
 import { authenticationSchema, type TAuthForm } from './resources'
 
 const AuthTemplate = () => {
     const { push } = useRouter()
+    const { setUserData } = useAuthStore()
 
     const {
         formState: { errors },
@@ -40,12 +40,13 @@ const AuthTemplate = () => {
         mutationFn: postLoginUserMutationFn,
         onSuccess: (response: TCriticalAny) => {
             toast.success('با موفقیت وارد شدید')
-            const expirationDate = new Date()
-            expirationDate.setHours(expirationDate.getHours() + 6)
 
-            localStorage.setItem('token', response.data.token)
-            localStorage.setItem('fullName', response.data.fullName)
-            localStorage.setItem('lastRole', JSON.stringify(response.data.lastRole))
+            setUserData({
+                fullName: response.data.fullName,
+                token: response.data.token,
+                userName: response.data.userName,
+                lastRole: response.data.lastRole
+            })
 
             //redirect to panel
             push(Routes.Panel())
@@ -59,17 +60,6 @@ const AuthTemplate = () => {
             refetchCaptcha()
         }
     })
-
-    //redirect user to panel if there is token in cookie
-    useEffect(() => {
-        const accessToken = localStorage.getItem('token')
-
-        //check if there is token in cookie
-        if (!!accessToken) {
-            push(Routes.Panel())
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
 
     return (
         <div className='grid p-5 w-screen h-screen bg-gray-100 overflow-y-auto'>
@@ -156,7 +146,7 @@ const AuthTemplate = () => {
                 <p className='text-[10px] sm:text-sm md:text-base text-center mt-3 text-primary font-medium'>
                     کلیه حقوق مادی و معنوی این سامانه متعلق به سازمان آموزش و پرورش استثنایی کشور می باشد
                     <br />
-                     طراحی و پیاده‌سازی این سامانه توسط تیم طراحی دانشگاه تربیت دبیر شهید رجایی انجام شده است.
+                    طراحی و پیاده‌سازی این سامانه توسط تیم طراحی دانشگاه تربیت دبیر شهید رجایی انجام شده است.
                 </p>
             </div>
         </div>

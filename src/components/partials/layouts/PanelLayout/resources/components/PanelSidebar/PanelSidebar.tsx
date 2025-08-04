@@ -1,6 +1,6 @@
 'use client'
 
-import { type FC, useEffect, useState } from 'react'
+import { type FC } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
@@ -12,8 +12,7 @@ import { SModal } from '@atoms/SModal'
 import { SNavLink } from '@atoms/SNavLink'
 
 import { Routes } from '@core/constants/routes'
-import { type TCriticalAny } from '@core/types/type-any'
-import { type TUserLastRoleType } from '@core/types/user/user.types'
+import { useAuthStore } from '@core/services/stores/auth.store'
 
 import { type IPanelSidebarProps, LogoutModal, SIDEBAR_LIST } from './resources'
 
@@ -21,15 +20,12 @@ const PanelSidebar: FC<IPanelSidebarProps> = ({ closeSidebarHandler, isShowSideb
     const pathname = usePathname()
 
     const [isShowLogoutModal, { close: onCloseLogoutModal, open: onOpenLogoutModal }] = useDisclosure(false)
-    const [fullName, setFullName] = useState('')
-    const [lastRole, setLastRole] = useState<TUserLastRoleType>()
 
-    //get fullName from localStorage
-    useEffect(() => {
-        if (localStorage.getItem('fullName')) setFullName(localStorage.getItem('fullName') ?? '')
-        if (localStorage.getItem('lastRole')) setLastRole(JSON.parse(localStorage.getItem('lastRole') as TCriticalAny))
-    }, [])
+    const { fullName, lastRole } = useAuthStore()
+
     const checkIsActive = (href: string) => (href !== '/panel' ? pathname.includes(href) : pathname === href)
+
+    console.log('lastRole : ', lastRole)
 
     return (
         <>
@@ -60,6 +56,8 @@ const PanelSidebar: FC<IPanelSidebarProps> = ({ closeSidebarHandler, isShowSideb
                 </div>
                 <div className='mb-auto space-y-2'>
                     {SIDEBAR_LIST.map((sidebarGroup, index) => {
+                        if (lastRole?.roleId !== 1 && index > 0) return
+
                         return (
                             <div key={index} className='mb-3'>
                                 <span className='text-xs font-semibold text-gray-500 mb-1'>

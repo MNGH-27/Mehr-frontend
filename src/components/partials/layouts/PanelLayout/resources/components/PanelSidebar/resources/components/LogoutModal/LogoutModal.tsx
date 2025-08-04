@@ -6,6 +6,7 @@ import { useQueryClient } from '@tanstack/react-query'
 import { SButton } from '@atoms/SButton'
 
 import { Routes } from '@core/constants/routes'
+import { useAuthStore } from '@core/services/stores/auth.store'
 
 interface ILogoutModalProps {
     onClose: () => void
@@ -14,12 +15,10 @@ interface ILogoutModalProps {
 const LogoutModal: FC<ILogoutModalProps> = ({ onClose }) => {
     const { push } = useRouter()
     const queryClient = useQueryClient()
+    const { clearUserData } = useAuthStore()
 
     const onLogoutHandler = () => {
-        deleteCookie('token')
-        deleteCookie('fullName')
-        deleteCookie('lastRole')
-        localStorage.removeItem('token')
+        clearUserData()
 
         //reset all queries
         queryClient.removeQueries()

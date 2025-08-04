@@ -13,12 +13,14 @@ import { useGetReportItems } from '@core/services/hooks/report/useGetReportItems
 
 const CreateReportTemplate = () => {
     const [page, setPage] = useQueryParam('page', NumberParam)
+    const [Title] = useQueryParam('name', NumberParam)
+    const [Type] = useQueryParam('type', NumberParam)
 
     const {
         data: allReports,
         isLoading: isLoadingAllReports,
         isError: isErrorAllReports
-    } = useGetReportItems({ pageNumber: page ?? 1, pageSize: 10 })
+    } = useGetReportItems({ pageNumber: page ?? 1, pageSize: 10, Title, Type })
 
     return (
         <div className='space-y-5'>

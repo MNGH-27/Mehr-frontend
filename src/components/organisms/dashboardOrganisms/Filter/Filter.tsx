@@ -1,13 +1,10 @@
 'use client'
 
-import { ChartArea, ChartAreaIcon, Layers } from 'lucide-react'
-import { NumberParam, StringParam, useQueryParams } from 'use-query-params'
-import { useDisclosure } from '@mantine/hooks'
+import { ChartAreaIcon, Layers } from 'lucide-react'
+import { StringParam, useQueryParams } from 'use-query-params'
 
 import { SInputField } from '@molecules/SInputField'
 
-import { SButton } from '@atoms/SButton'
-import { SModal } from '@atoms/SModal'
 import { SSelect } from '@atoms/SSelect'
 
 import { useGetAllRegions } from '@core/services/hooks/basic-info/useGetAllRegions'
@@ -15,14 +12,9 @@ import { useGetAllState } from '@core/services/hooks/basic-info/useGetAllState'
 import { useGetAllReportType } from '@core/services/hooks/report/useGetAllReportType'
 import { convertDataSelectList } from '@core/utils/common/convert-data-select-list'
 
-import { FillFromModal } from './resources'
-
-const FillReportFilter = () => {
-    const [isShowAddModal, { close: onCloseAddModal, open: onOpenAddModal }] = useDisclosure(false)
-
+const DashboardFilter = () => {
     const [query, setQuery] = useQueryParams({
         ReportItemId: StringParam,
-        page: NumberParam,
         stateId: StringParam,
         regionId: StringParam
     })
@@ -34,27 +26,18 @@ const FillReportFilter = () => {
     })
     return (
         <>
-            <div className='flex md:flex-row flex-col items-start justify-center gap-5'>
-                <SSelect
-                    leftSection={<ChartAreaIcon />}
-                    onChange={(value) => {
-                        setQuery({
-                            page: 1,
-                            ReportItemId: value ?? ''
-                        })
-                    }}
-                    data={convertDataSelectList(allReportItems?.data.filter((item) => item.id !== 0))}
-                    isLoading={isLoadingAllReportItems}
-                    value={query.ReportItemId ?? ''}
-                    placeholder='نوع گزارش برای فیلتر را مشخص کنید'
-                />
-                <div className='flex flex-col sm:flex-row items-center justify-center gap-y-3 gap-x-5 whitespace-nowrap w-full lg:w-fit'>
-                    <SButton onClick={onOpenAddModal} size='M' variant='FilledPrimary'>
-                        <ChartArea />
-                        پر کردن گزارش
-                    </SButton>
-                </div>
-            </div>
+            <SSelect
+                leftSection={<ChartAreaIcon />}
+                onChange={(value) => {
+                    setQuery({
+                        ReportItemId: value ?? ''
+                    })
+                }}
+                data={convertDataSelectList(allReportItems?.data.filter((item) => item.id !== 0))}
+                isLoading={isLoadingAllReportItems}
+                value={query.ReportItemId ?? ''}
+                placeholder='نوع گزارش برای فیلتر را مشخص کنید'
+            />
             <div className='w-full grid sm:grid-cols-2 gap-5'>
                 <SInputField label='استان' errors={{}} name={''}>
                     <SSelect
@@ -81,20 +64,8 @@ const FillReportFilter = () => {
                     />
                 </SInputField>
             </div>
-
-            <SModal
-                onClose={onCloseAddModal}
-                opened={isShowAddModal}
-                topSection={{
-                    title: 'ایجاد گزارش',
-                    description: 'مشخصات گزارش جدید را وارد کنید:',
-                    icon: <ChartArea />
-                }}
-            >
-                <FillFromModal onClose={onCloseAddModal} />
-            </SModal>
         </>
     )
 }
 
-export default FillReportFilter
+export default DashboardFilter

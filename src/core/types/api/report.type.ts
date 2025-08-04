@@ -1,17 +1,11 @@
 export type TReportItemType = {
-    reportItemId: number
     title: string
     description: string
-    answer: {
-        answerValue: number | null
-        answerStr: string | null
-    } | null
-    reportItemType: number
-    reportTypeTitle: string
+    id: number
     reportChart: number
-    reportChartTitle: string
+    type: number
+    typeTitle: string
 }
-
 export type TReportOfProvinceItemType = {
     stateId: number
     stateName: string
@@ -46,4 +40,21 @@ export type TReportChartItemType = {
     sumTotal: number
     date: string
     dateNum: number | null
+}
+
+export type TReportTableItemType = {
+    reportType: number
+    reportTypeTitle: string
+    reportDataTables: {
+        reportItemId: number
+        reportItemName: string
+        organId: number | null
+        organName: string | null
+        regionId: number | null
+        regionName: string | null
+        stateId: number | null
+        stateName: string | null
+        answerValue: number
+        answerStr: number | null
+    }[]
 }

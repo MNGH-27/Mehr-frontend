@@ -2,28 +2,28 @@ import { useQuery, type UseQueryResult } from '@tanstack/react-query'
 
 import { QueryKeysEnum } from '@core/enums/query-keys'
 import { axiosRequestHandler } from '@core/services/axios'
-import { type TReportDataItemType } from '@core/types/api/report.type'
-import { type TPaginateDataType } from '@core/types/paginate-data'
+import { type TReportTableItemType } from '@core/types/api/report.type'
+import { type TWithOutPaginateDataType } from '@core/types/with-out-paginate-data'
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
-type TUseGetReportDataType = {
-    pageNumber: number
-    pageSize: number
-    RegionId?: string | number | null
+type TUseGetReportTableType = {
     StateId?: string | number | null
+    RegionId?: string | number | null
     ReportType?: string | number | null
 }
 
-const useGetReportData = (params: TUseGetReportDataType): UseQueryResult<TPaginateDataType<TReportDataItemType>> =>
+const useGetReportTable = (
+    params: TUseGetReportTableType
+): UseQueryResult<TWithOutPaginateDataType<TReportTableItemType>> =>
     useQuery({
-        queryKey: [QueryKeysEnum.ReportData, { ...params }],
+        queryKey: [QueryKeysEnum.ReportTable, { ...params }],
         queryFn: async () =>
             await axiosRequestHandler({
-                url: `Report/GetReportData`,
+                url: `Report/GetReportTable`,
                 method: 'get',
                 params
             }),
         enabled: !!params.ReportType
     })
 
-export default useGetReportData
+export default useGetReportTable

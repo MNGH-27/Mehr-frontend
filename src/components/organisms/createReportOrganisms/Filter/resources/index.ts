@@ -1,3 +1,3 @@
-import AddOrganModal from './components/AddOrganModal/AddOrganModal'
+import AddReportModal from './components/AddReportModal/AddReportModal'
 
-export { AddOrganModal }
+export { AddReportModal }

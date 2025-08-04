@@ -12,6 +12,7 @@ import { SSelect } from '@atoms/SSelect'
 
 import { postChangeRoleMutationFn } from '@core/services/api/user/post-change-role'
 import { useGetRoleOrgan } from '@core/services/hooks/user/useGetRoleOrgan'
+import { useAuthStore } from '@core/services/stores/auth.store'
 import { type TCriticalAny } from '@core/types/type-any'
 
 import { setOrganFormSchema } from './resources'
@@ -22,6 +23,7 @@ interface ISetRoleModalProps {
 
 const SetRoleModal: FC<ISetRoleModalProps> = ({ onClose }) => {
     const queryClient = useQueryClient()
+    const { setUserData } = useAuthStore()
 
     const {
         handleSubmit,
@@ -38,17 +40,20 @@ const SetRoleModal: FC<ISetRoleModalProps> = ({ onClose }) => {
         onSuccess: (response: TCriticalAny) => {
             toast.success('نقش با موفقیت تغییر کرد')
 
-            //add new token
-            localStorage.setItem('token', response.data.token)
-
             //reset all queries
             queryClient.resetQueries()
 
             const expirationDate = new Date()
             expirationDate.setHours(expirationDate.getHours() + 6)
-
-            //set new role and organ as lastRole in cookie
-            localStorage.setItem('lastRole', JSON.stringify(response.data.lastUserRole))
+            setUserData({
+                token: response.data.token,
+                lastRole: {
+                    organId: response.data.lastUserRole.organId,
+                    organName: response.data.lastUserRole.organName,
+                    roleId: response.data.lastUserRole.roleId,
+                    roleName: response.data.lastUserRole.roleName
+                }
+            })
 
             window.dispatchEvent(new CustomEvent('lastRoleChanged', { detail: response.data }))
             //close setRoleModal

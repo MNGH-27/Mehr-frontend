@@ -5,8 +5,9 @@ interface IAddReportModalProps {
 type TAddReportForm = {
     title: string
     description: string
-    reportItemType: string
+    reportType: string
     reportChart: string
+    reportGradeType: string
 }
 
 export type { IAddReportModalProps, TAddReportForm }

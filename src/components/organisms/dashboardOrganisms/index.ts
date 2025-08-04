@@ -1,3 +1,3 @@
+import DashboardFilter from './Filter/Filter'
 import DashboardTable from './Table/Table'
-
-export { DashboardTable }
+export { DashboardTable, DashboardFilter }

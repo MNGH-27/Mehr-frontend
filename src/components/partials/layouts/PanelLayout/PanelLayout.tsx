@@ -1,45 +1,22 @@
 'use client'
 
-import { type FC, useEffect } from 'react'
+import { type FC } from 'react'
 import Image from 'next/image'
-import { useRouter } from 'next/navigation'
 import { Menu, UserCog } from 'lucide-react'
 import { useDisclosure } from '@mantine/hooks'
-import { useQueryClient } from '@tanstack/react-query'
 
 import { SButton } from '@atoms/SButton'
 import { SModal } from '@atoms/SModal'
 
-import { Routes } from '@core/constants/routes'
+import { useCheckLogin } from '@core/utils/hooks/use-check-login.hooks'
 
 import { type IPanelLayoutProps, PanelHeader, PanelSidebar } from './resources'
 import { SetRoleModal } from './resources/components/PanelHeader/resources'
 
 const PanelLayout: FC<IPanelLayoutProps> = ({ children }) => {
-    const { push } = useRouter()
-    const queryClient = useQueryClient()
     const [isShowSidebar, { close: onCloseSidebar, open: onOpenSidebar }] = useDisclosure(false)
     const [isShowSetRoleModal, { open: openSetRoleModal, close: closeSetRoleModal }] = useDisclosure(false)
-
-    //redirect user to panel if there is no token in cookie
-    useEffect(() => {
-        const accessToken = localStorage.getItem('token')
-
-        //check if there is no token in cookie
-        if (!accessToken) {
-            localStorage.removeItem('fullName')
-            localStorage.removeItem('lastRole')
-
-            localStorage.removeItem('token')
-
-            //reset all queries
-            queryClient.removeQueries()
-
-            push(Routes.Login())
-        }
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+    useCheckLogin()
 
     return (
         <main className='p-2 lg:p-4 h-screen w-screen space-y-3 bg-white lg:bg-gray-100 flex flex-col    lg:flex-row items-center gap-x-4'>

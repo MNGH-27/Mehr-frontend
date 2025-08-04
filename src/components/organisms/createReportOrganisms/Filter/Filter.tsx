@@ -1,27 +1,35 @@
 'use client'
 
 import { useState } from 'react'
-import { ChartArea } from 'lucide-react'
-import { StringParam, useQueryParams } from 'use-query-params'
+import { ChartArea, ChartAreaIcon } from 'lucide-react'
+import { NumberParam, StringParam, useQueryParams } from 'use-query-params'
 import { useDisclosure } from '@mantine/hooks'
 
 import { SSearchWithDelay } from '@molecules/SSearchWithDelay'
 
 import { SButton } from '@atoms/SButton'
 import { SModal } from '@atoms/SModal'
+import { SSelect } from '@atoms/SSelect'
 
-import { AddOrganModal } from './resources'
+import { useGetAllReportType } from '@core/services/hooks/report/useGetAllReportType'
+import { convertDataSelectList } from '@core/utils/common/convert-data-select-list'
+
+import { AddReportModal } from './resources'
 
 const CreateReportFilter = () => {
     const [isShowAddModal, { close: onCloseAddModal, open: onOpenAddModal }] = useDisclosure(false)
 
     const [query, setQuery] = useQueryParams({
-        name: StringParam
+        name: StringParam,
+        type: StringParam,
+        page: NumberParam
     })
     const [Search, setSearch] = useState(query.name ?? '')
 
+    const { data: reportType, isLoading: isLoadingReportType } = useGetAllReportType({})
+
     const onChangeFilter = (value: string | null) => {
-        setQuery({ name: value })
+        setQuery({ name: value, page: 1 })
     }
 
     return (
@@ -32,15 +40,24 @@ const CreateReportFilter = () => {
                     onChange={(e) => setSearch(e.target.value)}
                     onDelayChange={onChangeFilter}
                 />
-
-                <div className='flex flex-col sm:flex-row items-center justify-center gap-y-3 gap-x-5 whitespace-nowrap w-full lg:w-fit'>
-                    <SButton onClick={onOpenAddModal} size='SM' variant='FilledPrimary'>
-                        <ChartArea />
-                        افزودن گزارش
-                    </SButton>
-                </div>
+                <SSelect
+                    leftSection={<ChartAreaIcon />}
+                    onChange={(value) => {
+                        setQuery({
+                            page: 1,
+                            type: value ?? ''
+                        })
+                    }}
+                    data={convertDataSelectList(reportType?.data.filter((item) => item.id !== 0))}
+                    isLoading={isLoadingReportType}
+                    value={query.type ?? ''}
+                    placeholder='نوع گزارش برای فیلتر را مشخص کنید'
+                />
             </div>
-
+            <SButton onClick={onOpenAddModal} size='SM' variant='FilledPrimary'>
+                <ChartArea />
+                افزودن گزارش
+            </SButton>
             <SModal
                 onClose={onCloseAddModal}
                 opened={isShowAddModal}
@@ -50,7 +67,7 @@ const CreateReportFilter = () => {
                     icon: <ChartArea />
                 }}
             >
-                <AddOrganModal onClose={onCloseAddModal} />
+                <AddReportModal onClose={onCloseAddModal} />
             </SModal>
         </div>
     )

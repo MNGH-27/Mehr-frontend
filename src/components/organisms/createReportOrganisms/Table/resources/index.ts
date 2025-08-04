@@ -1,4 +1,4 @@
-import EditOrganModal from './components/EditOrganModal/EditOrganModal'
+import DeleteReportModal from './components/DeleteReportModal/DeleteReportModal'
 import { TABLE_HEAD } from './constants/static-data.constants'
 import type ICreateReportTableProps from './types/types'
-export { type ICreateReportTableProps, EditOrganModal, TABLE_HEAD }
+export { type ICreateReportTableProps, DeleteReportModal, TABLE_HEAD }

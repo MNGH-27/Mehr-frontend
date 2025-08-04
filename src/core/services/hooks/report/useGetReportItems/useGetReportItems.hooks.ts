@@ -7,9 +7,8 @@ import { type TPaginateDataType } from '@core/types/paginate-data'
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 type TUseGetReportItemsType = {
-    StateId?: string | number | null
-    RegionId?: string | number | null
-    ReportItemId?: string | number | null
+    Title?: string | number | null
+    Type?: string | number | null
     pageNumber: number
     pageSize: number
 }

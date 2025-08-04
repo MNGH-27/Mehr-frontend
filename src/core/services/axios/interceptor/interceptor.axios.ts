@@ -1,6 +1,5 @@
 import { toast } from 'react-toastify'
 import axios from 'axios'
-import { deleteCookie } from 'cookies-next'
 import qs from 'qs'
 
 const axiosInterceptorInstance = axios.create({
@@ -18,9 +17,7 @@ axiosInterceptorInstance.interceptors.response.use(
         // Handle response errors here
         try {
             if (error.response.status === 401) {
-                deleteCookie('token') // Clear current user token cookie
-
-                localStorage.removeItem('token')
+                localStorage.removeItem('mehr-user-storage')
 
                 window.location.href = '/' // Navigates the user to the auth page (login page or ...)
             } else if (error.response.status === 403) {

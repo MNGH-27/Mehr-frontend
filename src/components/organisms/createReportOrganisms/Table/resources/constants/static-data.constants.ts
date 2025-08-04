@@ -11,9 +11,7 @@ const TABLE_HEAD = [
     {
         title: 'نوع گزارش'
     },
-    {
-        title: 'نوع نمودار'
-    },
+
     {
         title: 'عملیات'
     }
