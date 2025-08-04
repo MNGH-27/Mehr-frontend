@@ -16,11 +16,13 @@ const FillReportTemplate = () => {
     const [ReportItemId] = useQueryParam('ReportItemId', NumberParam)
     const [StateId] = useQueryParam('stateId', StringParam)
     const [RegionId] = useQueryParam('regionId', StringParam)
+    const [GradeId] = useQueryParam('GradeId', StringParam)
+
     const {
         data: allReports,
         isLoading: isLoadingAllReports,
         isError: isErrorAllReports
-    } = useGetReportData({ pageNumber: page ?? 1, pageSize: 10, ReportType: ReportItemId, RegionId, StateId })
+    } = useGetReportData({ pageNumber: page ?? 1, pageSize: 10, ReportType: ReportItemId, RegionId, StateId, GradeId })
 
     return (
         <div className='space-y-5'>

@@ -1,6 +1,6 @@
 'use client'
 
-import { ChartArea, ChartAreaIcon, Layers } from 'lucide-react'
+import { ChartArea, ChartAreaIcon, Layers, Layers2 } from 'lucide-react'
 import { NumberParam, StringParam, useQueryParams } from 'use-query-params'
 import { useDisclosure } from '@mantine/hooks'
 
@@ -12,6 +12,7 @@ import { SSelect } from '@atoms/SSelect'
 
 import { useGetAllRegions } from '@core/services/hooks/basic-info/useGetAllRegions'
 import { useGetAllState } from '@core/services/hooks/basic-info/useGetAllState'
+import { useGetAllReportGradeType } from '@core/services/hooks/report/useGetAllReportGradeType'
 import { useGetAllReportType } from '@core/services/hooks/report/useGetAllReportType'
 import { convertDataSelectList } from '@core/utils/common/convert-data-select-list'
 
@@ -24,7 +25,8 @@ const FillReportFilter = () => {
         ReportItemId: StringParam,
         page: NumberParam,
         stateId: StringParam,
-        regionId: StringParam
+        regionId: StringParam,
+        GradeId:StringParam
     })
 
     const { data: allReportItems, isLoading: isLoadingAllReportItems } = useGetAllReportType({})
@@ -32,9 +34,11 @@ const FillReportFilter = () => {
     const { data: regionList, isLoading: isLoadingAllRegion } = useGetAllRegions({
         StateId: query.stateId ?? ''
     })
+    const { data: reportGrade, isLoading: isLoadingReportGrade } = useGetAllReportGradeType({})
+
     return (
         <>
-            <div className='flex md:flex-row flex-col items-start justify-center gap-5'>
+            <div className='flex md:flex-row flex-col items-center justify-center gap-5'>
                 <SSelect
                     leftSection={<ChartAreaIcon />}
                     onChange={(value) => {
@@ -48,6 +52,18 @@ const FillReportFilter = () => {
                     value={query.ReportItemId ?? ''}
                     placeholder='نوع گزارش برای فیلتر را مشخص کنید'
                 />
+                    <SInputField errors={{}} name={''} >
+                        <SSelect
+                            data={convertDataSelectList(reportGrade?.data.filter((item) => item.id !== 0))}
+                            isLoading={isLoadingReportGrade}
+                            leftSection={<Layers2 />}
+                            onChange={(value) => {
+                                setQuery({ ...query, GradeId: value })
+                            }}
+                            value={query.GradeId}
+                            placeholder='مقطع را انتخاب کنید'
+                        />
+                    </SInputField>
                 <div className='flex flex-col sm:flex-row items-center justify-center gap-y-3 gap-x-5 whitespace-nowrap w-full lg:w-fit'>
                     <SButton onClick={onOpenAddModal} size='M' variant='FilledPrimary'>
                         <ChartArea />
