@@ -16,6 +16,7 @@ const DashboardTable: FC<IDashboardTableProps> = ({ data }) => {
 
     useEffect(() => {
         convertDataHandler()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [data])
 
     const convertDataHandler = () => {

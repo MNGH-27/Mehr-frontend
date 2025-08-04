@@ -1,6 +1,5 @@
 import { type FC } from 'react'
 import { useRouter } from 'next/navigation'
-import { deleteCookie } from 'cookies-next'
 import { useQueryClient } from '@tanstack/react-query'
 
 import { SButton } from '@atoms/SButton'
