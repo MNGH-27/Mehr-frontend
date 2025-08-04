@@ -12,6 +12,7 @@ type TUseGetReportDataType = {
     RegionId?: string | number | null
     StateId?: string | number | null
     ReportType?: string | number | null
+    GradeId?: string | number | null
 }
 
 const useGetReportData = (params: TUseGetReportDataType): UseQueryResult<TPaginateDataType<TReportDataItemType>> =>
