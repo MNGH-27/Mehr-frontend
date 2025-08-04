@@ -31,7 +31,7 @@ const FillFromModal: FC<IFillFromModalProps> = ({ data, onClose }) => {
     useEffect(() => {
         if (data) {
             setValue(data?.answerValue?.toString() ?? '')
-            setReportId(data?.reportItemId?.toString() ?? '')
+            setReportId(data?.id    ?.toString() ?? '')
         }
     }, [data])
 
@@ -42,7 +42,7 @@ const FillFromModal: FC<IFillFromModalProps> = ({ data, onClose }) => {
 
             //invalidate queryKeys
             queryClient.invalidateQueries({
-                queryKey: [QueryKeysEnum.ReportItemsByRegionId]
+                queryKey: [QueryKeysEnum.ReportData]
             })
 
             //close modal
