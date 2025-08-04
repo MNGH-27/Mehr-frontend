@@ -6,7 +6,7 @@ const postFillReportItemForRegionMutationFn = async (data: {
     answerValue?: number
 }) => {
     return await axiosRequestHandler({
-        url: 'Report/CreateReport',
+        url: 'Report/UpdateReport',
         method: 'post',
         data
     })
