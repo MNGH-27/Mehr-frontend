@@ -84,7 +84,7 @@ const FillFromModal: FC<IFillFromModalProps> = ({ onClose }) => {
 
                         mutate({
                             answerValue: Number(value),
-                            reportItemId: +reportId
+                            reportId: +reportId
                         })
                     }}
                     isLoading={isPending}
