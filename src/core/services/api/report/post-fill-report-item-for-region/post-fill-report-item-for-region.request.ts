@@ -1,6 +1,7 @@
 import { axiosRequestHandler } from '@core/services/axios'
 
 const postFillReportItemForRegionMutationFn = async (data: {
+    reportId : number
     reportItemId: number
     answerStr?: string
     answerValue?: number
