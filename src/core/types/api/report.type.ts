@@ -58,3 +58,88 @@ export type TReportTableItemType = {
         answerStr: number | null
     }[]
 }
+
+export type TShakhesColorItemType = {
+    id: number
+    frontId: number
+    name: string
+    shakesValue: number
+    subs: {
+        id: number
+        frontId: number
+        name: string
+        shakesValue: number
+    }[]
+}
+
+export type TShakhesReportItemType = {
+    shakhesColor: TShakhesColorItemType[]
+    signAndClassification: {
+        classQuantityTitle: string
+        regionDensityTitle: string
+        signedUpQuantityTitle: string
+        classQuantity: {
+            [key: string]: number
+        }
+        regionDensity: {
+            [key: string]: number
+        }
+        signedUpQuantity: {
+            [key: string]: number
+        }
+    }
+    staffReports: {
+        militaryEntrancesTitle: string
+        ar28EntrancesTitle: string
+        transferredEmployeesEntrancesTitle: string
+        convertedStatusEmployeesTitle: string
+        farhangianEntrancesTitle: string
+        currentEmployeesQuantityTitle: string
+        retiredEmployeesQuantityTitle: string
+        maternityLeaveQuantityTitle: string
+        educationalLeaveQuantityTitle: string
+        transferredEmployeesExitTitle: string
+        organEmployeesQuantityTitle: string
+        militaryEntrances: number
+        ar28Entrances: number
+        transferredEmployeesEntrances: number
+        convertedStatusEmployees: number
+        farhangianEntrances: number
+        currentEmployeesQuantity: number
+        retiredEmployeesQuantity: number
+        maternityLeaveQuantity: number
+        educationalLeaveQuantity: number
+        transferredEmployeesExit: number
+        organEmployeesQuantity: number
+    }
+    staffTrainingReport: {
+        coursesNumberTitle: string
+        coursesHoursNumberTitle: string
+        coursesSignedUpTitle: string
+        coursesWatchedHoursTitle: string
+        coursesNumber: number
+        coursesHoursNumber: number
+        coursesSignedUp: number
+        coursesWatchedHours: number
+    }
+    educationStatusReport: {
+        numberOfSchoolsTitle: string
+        sportSpacesTitle: string
+        sportSpacesAreaTitle: string
+        workshopsNumberTitle: string
+        labsNumberTitle: string
+        numberOfSchools: {
+            [key: string]: number
+        }
+        sportSpaces: number
+        sportSpacesArea: number
+        workshopsNumber: number
+        labsNumber: number
+    }
+    bookReport: {
+        givenBooksQuantityTitle: string
+        givenBooksQuantity: {
+            [key: string]: number
+        }
+    }
+}

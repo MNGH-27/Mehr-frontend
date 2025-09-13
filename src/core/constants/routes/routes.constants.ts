@@ -17,7 +17,9 @@ const Routes = {
     CreateReport: () => Routes.Panel() + '/create-report',
     CreateReportDetail: (reportId: string | number) => Routes.CreateReport() + `/${reportId}`,
 
-    FillReport: () => Routes.Panel() + '/fill-report'
+    FillReport: () => Routes.Panel() + '/fill-report',
+
+    MapReport: () => Routes.Panel() + '/map-report'
 }
 
 export default Routes

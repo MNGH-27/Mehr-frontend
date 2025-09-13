@@ -1,4 +1,13 @@
-import { Building2, ChartColumn, ChartNetworkIcon, ExternalLinkIcon, Home, Users2, UserSquare2 } from 'lucide-react'
+import {
+    Building2,
+    ChartColumn,
+    ChartNetworkIcon,
+    ExternalLinkIcon,
+    Home,
+    Map,
+    Users2,
+    UserSquare2
+} from 'lucide-react'
 
 import { Routes } from '@core/constants/routes'
 
@@ -15,6 +24,11 @@ const SIDEBAR_LIST = [
                 title: 'ثبت آمار',
                 icon: <ChartColumn size={20} />,
                 href: Routes.FillReport()
+            },
+            {
+                title: 'گزارش نقشه',
+                icon: <Map size={20} />,
+                href: Routes.MapReport()
             }
         ]
     },

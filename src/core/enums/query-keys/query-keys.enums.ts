@@ -10,6 +10,7 @@ enum QueryKeysEnum {
     ReportTable = 'ReportTable',
     AllReportType = 'AllReportType',
     AllReportGradeType = 'AllReportGradeType',
+    ShakhesReport = 'ShakhesReport',
     ReportItemsByRegionId = 'ReportItemsByRegionId',
     AllReportItem = 'AllReportItem',
     ReportData = 'ReportData',
