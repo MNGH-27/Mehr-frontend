@@ -18,6 +18,7 @@ const MapReportTemplate = () => {
     } = useGetShakhesReport({})
 
     const selectCityHandler = (province: number) => {
+        console.log(province)
         setSelectedProvince(province)
     }
 

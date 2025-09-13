@@ -27,7 +27,6 @@ interface ClusterMapChartProps {
 }
 
 const ClusterMapChart = ({
-    colors = ['#E6EFFF', '#BEDAFF', '#6AA1FF', '#165DFF', '#2643FF', '#0022FF'],
     data,
     pageName = '',
     sectionName = '',
@@ -44,6 +43,7 @@ const ClusterMapChart = ({
     const minTotalCount = Math.min(...data.map((item) => item.shakesValue))
     const maxTotalCount = Math.max(...data.map((item) => item.shakesValue))
 
+    const [chartState, setChartState] = useState<'province' | 'city'>('province')
     const [provincesGeojson, setProvincesGeojson] = useState({})
     const [citiesGeojson, setCitiesGeojson] = useState({})
     const [citiesLoading, setCitiesLoading] = useState(true)
@@ -104,7 +104,7 @@ const ClusterMapChart = ({
         if (clickCount === 1) {
             clickTimer = setTimeout(() => {
                 clickCount = 0
-            }, 250) // Adjust the delay as needed
+            }, 250)
         } else if (clickCount === 2) {
             const chart = chartRef?.current?.chart
 
@@ -112,10 +112,8 @@ const ClusterMapChart = ({
             const province = data.find((province) => +province.frontId === provinceId)
             const availableCities = citiesJsonData.filter((city) => city.properties.provinceId === provinceId)
 
-            // render/show loading center of chart
             chart?.showLoading(`...در حال دریافت اطلاعات`)
 
-            // fetch from api
             if (withDrilldown) {
                 citiesJsonData.forEach((singleCity: TCriticalAny) => {
                     const cityCode = singleCity.properties['OBJECTID_1']
@@ -132,12 +130,16 @@ const ClusterMapChart = ({
                         availableCity = province?.subs.find((city) => +city.frontId === +cityCode)
                     }
 
-                    //add click event to send data to parent component
-                    singleCity.events = {
-                        click: function () {
-                            selectCityHandler(province, availableCity)
-                        }
-                    }
+                    singleCity.provinceData = province
+                    singleCity.availableCity = availableCity
+
+                    // // add click event to send data to parent component
+                    // singleCity.events = {
+                    //     click: function () {
+                    //         console.log('click')
+                    //         selectCityHandler(this.provinceData, this.availableCity)
+                    //     }
+                    // }
 
                     if (availableCity) {
                         singleCity.value = availableCity.shakesValue
@@ -153,38 +155,32 @@ const ClusterMapChart = ({
                 const minCount = Math.min(...(province?.subs.map((item) => item.shakesValue) ?? []))
                 const maxCount = Math.max(...(province?.subs.map((item) => item.shakesValue) ?? []))
 
-                // update colorAxis manually
-                chart?.update(
-                    {
-                        colorAxis: {
-                            dataClasses: generateDataClasses({
-                                minNum: minCount,
-                                maxNum: maxCount,
-                                colors
-                            })
-                        }
-                    },
-                    true,
-                    true
-                )
+                chart?.update({
+                    colorAxis: {
+                        dataClasses: generateDataClasses({
+                            minNum: minCount,
+                            maxNum: maxCount,
+                            steps: 10
+                        })
+                    }
+                })
 
-                // set drilldown
                 chart?.addSeriesAsDrilldown(e.point, {
                     type: 'map',
                     name: 'City Details',
                     data: availableCities,
-                    // Set Hover Style
+
                     states: {
                         hover: {
                             borderColor: 'black',
                             shadow: false
                         }
                     },
-                    // Show Name of the City
+
                     dataLabels: {
                         enabled: true,
                         formatter: function (): string {
-                            return (this as TCriticalAny).point.name // Access the name of the data point
+                            return (this as TCriticalAny).point.name
                         },
                         style: {
                             textOutline: '1px #000',
@@ -195,16 +191,24 @@ const ClusterMapChart = ({
                     point: {
                         events: {
                             click: function (event: TCriticalAny) {
-                                if (event.preventDefault) event.preventDefault() // Prevent default behavior
-                                if (event.stopPropagation) event.stopPropagation() // Stop bubbling
-                                // Custom click logic here
-                                selectCityHandler((this as TCriticalAny).province, (this as TCriticalAny).availableCity)
+                                console.log('click city chart')
+                                if (event.preventDefault) event.preventDefault()
+                                if (event.stopPropagation) event.stopPropagation()
+
+                                event.cancelBubble = true
+
+                                selectCityHandler(
+                                    (this as TCriticalAny).provinceData,
+                                    (this as TCriticalAny).availableCity
+                                )
+                                return false
                             }
                         }
                     }
                 })
 
-                // hide loading
+                setChartState('city')
+
                 chart?.hideLoading()
             }
         }
@@ -219,17 +223,19 @@ const ClusterMapChart = ({
                     dataClasses: generateDataClasses({
                         minNum: minTotalCount,
                         maxNum: maxTotalCount,
-                        colors
+                        steps: 10
                     })
                 }
             },
             true,
             true
         )
+
+        setChartState('province')
     }
 
     // set province Data & set pointers Drilldown
-    if (filterValues && filterValues.zone_type === '1') {
+    if (filterValues && filterValues.zone_type === '1' && chartState === 'province') {
         provinceJsonData.forEach((singleProvince: TCriticalAny) => {
             if (withDrilldown) singleProvince.drilldown = singleProvince.properties['OBJECTID_1']
             const provinceCode = singleProvince.properties['OBJECTID_1']
@@ -261,7 +267,7 @@ const ClusterMapChart = ({
             dataClasses: generateDataClasses({
                 minNum: minTotalCount,
                 maxNum: maxTotalCount,
-                colors
+                steps: 10
             })
         },
 

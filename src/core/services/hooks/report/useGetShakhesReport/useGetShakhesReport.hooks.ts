@@ -6,7 +6,10 @@ import { type TShakhesReportItemType } from '@core/types/api/report.type'
 import { type TWithOutPaginateDataType } from '@core/types/with-out-paginate-data'
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
-type TUseGetShakhesReportType = {}
+type TUseGetShakhesReportType = {
+    StateId?: string | number | null
+    RegionId?: string | number | null
+}
 
 const useGetShakhesReport = (
     params: TUseGetShakhesReportType

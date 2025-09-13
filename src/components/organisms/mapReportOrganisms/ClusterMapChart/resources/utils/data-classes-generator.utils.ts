@@ -1,111 +1,57 @@
-const generateDataClasses = ({ minNum, maxNum, colors }: { minNum: number; maxNum: number; colors: string[] }) => {
-    const numberFormatter = (number: number) => {
-        return Intl.NumberFormat('en-us').format(number)
-    }
+// تبدیل hex به rgb
+const hexToRgb = (hex: string) => {
+    const bigint = parseInt(hex.replace('#', ''), 16)
+    const r = (bigint >> 16) & 255
+    const g = (bigint >> 8) & 255
+    const b = bigint & 255
+    return { r, g, b }
+}
 
-    const badData = [Infinity, -Infinity]
-    if (badData.includes(maxNum))
-        return [
-            {
-                name: `بدون مقدار`,
-                to: 0,
-                color: '#ccc'
-            }
-        ]
+// تبدیل rgb به hex
+const rgbToHex = (r: number, g: number, b: number) =>
+    '#' + [r, g, b].map((x) => x.toString(16).padStart(2, '0')).join('')
+
+// گرد کردن عدد به نزدیک‌ترین مضرب مشخص
+const roundTo = (num: number, base: number) => Math.round(num / base) * base
+
+// ساخت بازه رنگی از قرمز → سبز
+export const generateDataClasses = ({
+    minNum,
+    maxNum,
+    steps = 10,
+    roundBase = 10
+}: {
+    minNum: number
+    maxNum: number
+    steps?: number
+    roundBase?: number
+}) => {
+    const start = hexToRgb('#ff0000') // قرمز (کمترین مقدار)
+    const end = hexToRgb('#00ff00') // سبز (بیشترین مقدار)
+
+    const rawStepSize = (maxNum - minNum) / steps
+    const stepSize = roundTo(rawStepSize, roundBase)
 
     const dataClasses = []
-    const numOfClasses = 6
-    const ranges: number[][] = []
+    let current = roundTo(minNum, roundBase)
 
-    const range = (maxNum - minNum) / numOfClasses
+    for (let i = 0; i < steps; i++) {
+        const next = i === steps - 1 ? roundTo(maxNum, roundBase) : current + stepSize
+        const ratio = i / (steps - 1)
 
-    for (let i = 0; i < numOfClasses; i++) {
-        const classMin = Math.round(minNum + i * range)
-        const classMax = Math.round(minNum + (i + 1) * range)
-        ranges.push([classMin, classMax])
-    }
+        const r = Math.round(start.r + (end.r - start.r) * ratio)
+        const g = Math.round(start.g + (end.g - start.g) * ratio)
+        const b = Math.round(start.b + (end.b - start.b) * ratio)
+        const color = rgbToHex(r, g, b)
 
-    if (maxNum - minNum <= 1) {
-        dataClasses.push(
-            {
-                name: `بدون مقدار`,
-                from: 0,
-                to: 0,
-                color: '#ccc'
-            },
-            {
-                name: `کمتر از ${numberFormatter(minNum)}`,
-                from: 1,
-                to: minNum,
-                color: colors[0]
-            },
-            {
-                name: `بیشتر از ${numberFormatter(minNum)}`,
-                from: minNum,
-                color: colors[2]
-            }
-        )
-        return dataClasses
-    }
+        dataClasses.push({
+            from: current,
+            to: next,
+            color
+        })
 
-    if (maxNum - minNum === 2 || maxNum - minNum === 3) {
-        dataClasses.push(
-            {
-                name: 'بدون مقدار',
-                from: 0,
-                to: 0,
-                color: '#ccc'
-            },
-            {
-                name: `کمتر از ${numberFormatter(minNum + 1)}`,
-                from: 1,
-                to: minNum === 0 ? 0 : minNum + 1,
-                color: minNum === 0 ? '#ccc' : colors[0]
-            },
-            {
-                name: `بیشتر از ${numberFormatter(minNum + 1)}`,
-                from: minNum + 1,
-                color: colors[2]
-            }
-        )
-        return dataClasses
-    }
-
-    for (let i = 0; i < numOfClasses; i++) {
-        const range = ranges[i]
-        const color = colors[i]
-
-        if (i === 0) {
-            dataClasses.push(
-                {
-                    name: 'بدون مقدار',
-                    from: 0,
-                    to: 0,
-                    color: '#ccc'
-                },
-                {
-                    name: `کمتر از ${numberFormatter(range[1])}`,
-                    from: 1,
-                    to: range[1],
-                    color: color
-                }
-            )
-        } else if (i === numOfClasses - 1) {
-            dataClasses.push({
-                name: `بیشتر از ${numberFormatter(range[0])}`,
-                from: range[0],
-                color: color
-            })
-        } else {
-            dataClasses.push({
-                name: `از ${numberFormatter(range[0])} تا ${numberFormatter(ranges[i + 1][0])}`,
-                from: range[0],
-                to: ranges[i + 1][0],
-                color: color
-            })
-        }
+        current = next
     }
 
     return dataClasses
 }
-export default generateDataClasses
